@@ -48,6 +48,22 @@ function! subversive#substituteMotion(type, ...)
     exec "set virtualedit=". oldVirtualEdit
 endfunction
 
+function! subversive#checkRequiredDependencies()
+    try
+        call repeat#invalidate()
+    catch /\VUnknown function/
+        echohl ErrorMsg
+        echo 'Could not find vim-repeat installed.  vim-subversive requires vim-repeat to function properly.  Please install vim-repeat and restart Vim'
+        echohl None
+    catch
+        " Sometimes error occurs due to clearing augroup that doesn't exist
+        " So just ignore this case
+        " Be nice if there was a less hacky way to do this but I can't think of one
+        " Checking runtimepath for vim-repeat doesn't work since not everyone uses it that way
+        " and some plugin managers actually merge everything together
+    endtry
+endfunction
+
 function! subversive#substituteLine(reg, count)
     let count = a:count > 0 ? a:count : 1
     let pasteIsMultiline = getreg(a:reg) =~ '\n'
