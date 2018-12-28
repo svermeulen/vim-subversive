@@ -32,8 +32,6 @@ function! subversive#substituteMotion(type, ...)
 
     exe "keepjump normal! " . selectKeys . exclRight . "\"_d"
 
-    echom 'a:type = ' . a:type
-
     if a:type ==# 'line'
         let pasteIsMultiline = getreg(s:activeRegister) =~ '\n'
 
@@ -43,25 +41,14 @@ function! subversive#substituteMotion(type, ...)
         endif
     endif
 
-    exe "keepjump normal! \"" . s:activeRegister . "P"
-
     exec "set virtualedit=". oldVirtualEdit
-endfunction
 
-function! subversive#checkRequiredDependencies()
-    try
-        call repeat#invalidate()
-    catch /\VUnknown function/
-        echohl ErrorMsg
-        echo 'Could not find vim-repeat installed.  vim-subversive requires vim-repeat to function properly.  Please install vim-repeat and restart Vim'
-        echohl None
-    catch
-        " Sometimes error occurs due to clearing augroup that doesn't exist
-        " So just ignore this case
-        " Be nice if there was a less hacky way to do this but I can't think of one
-        " Checking runtimepath for vim-repeat doesn't work since not everyone uses it that way
-        " and some plugin managers actually merge everything together
-    endtry
+    if g:subversiveIntegrateWithYoink && s:activeRegister == yoink#getDefaultReg()
+        " We need to start the paste as a distinct operation here so that undo applies to it only
+        call feedkeys("\<plug>(YoinkPaste_P)", 'tm')
+    else
+        exe "normal! \"" . s:activeRegister . "P"
+    endif
 endfunction
 
 function! subversive#substituteLine(reg, count)
@@ -80,11 +67,23 @@ function! subversive#substituteLine(reg, count)
         exe "normal! 0\"_d$"
     endif
 
-    exe "normal! \"" . a:reg . "P"
+    if g:subversiveIntegrateWithYoink && a:reg == yoink#getDefaultReg()
+        " We need to start the paste as a distinct operation here so that undo applies to it only
+        call feedkeys("\<plug>(YoinkPaste_P)", 'tm')
+    else
+        exe "normal! \"" . a:reg . "P"
+    endif
 endfunction
 
 function! subversive#substituteToEndOfLine(reg, count)
     let count = a:count > 0 ? a:count : 1
-    exec "normal! \"_d$\"" . a:reg . count . "p"
+    exec "normal! \"_d$"
+
+    if g:subversiveIntegrateWithYoink && a:reg == yoink#getDefaultReg()
+        " We need to start the paste as a distinct operation here so that undo applies to it only
+        call feedkeys(count . "\<plug>(YoinkPaste_p)", 'tm')
+    else
+        exec "normal! \"" . a:reg . count . "p"
+    endif
 endfunction
 

@@ -25,3 +25,5 @@ nmap S <plug>(SubversiveSubstituteToEndOfLine)
 
 Note: Requires [vim-repeat](https://github.com/tpope/vim-repeat)
 
+### Integration with yoink
+
