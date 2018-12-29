@@ -34,9 +34,15 @@ function! subversive#substituteMotion(type, ...)
         call setpos("']", s:savedEndPos)
     endif
 
+    " There might be a better way to do this but this seems to work well
+    let endsWithNewLine = getreg(s:activeRegister) =~ '\v\n$'
+
+    " We prefer to use change instead of delete and paste since change behaves much better in edge cases
+    " like end/beginning of the line, or end/beginning of the file, etc.
+    " Need to use paste mode to avoid auto indent etc
     let previousPaste = &paste
     set paste
-    exe "normal! `[\"_c" . opMode . "`]\<C-R>" . s:activeRegister . "\<ESC>"
+    exe "normal! `[\"_c" . opMode . "`]\<C-R>" . s:activeRegister . (endsWithNewLine ? "\<bs>" : "") . "\<ESC>"
     let &paste=previousPaste
 
     if s:hasYoinkInstalled && s:activeRegister == yoink#getDefaultReg()
