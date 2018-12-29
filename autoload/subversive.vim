@@ -1,5 +1,8 @@
 
 let s:activeRegister = ''
+let s:isFirstMotion = 0
+let s:savedStartPos = []
+let s:savedEndPos = []
 
 try
     call yoink#getDefaultReg()
@@ -10,46 +13,28 @@ endtry
 
 function! subversive#onPreSubstitute(register)
     let s:activeRegister = a:register
+    let s:isFirstMotion = 1
 endfunction
 
 function! subversive#substituteMotion(type, ...)
 
-    if &selection ==# 'exclusive'
-        let exclRight = "\<right>"
+    let opMode = 'v'
+
+    if a:type == 'line'
+        let opMode = 'V'
+    endif
+
+    if s:isFirstMotion
+        let s:savedStartPos = getpos("'[")
+        let s:savedEndPos = getpos("']")
+        let s:isFirstMotion = 0
     else
-        let exclRight = ""
+        " Necessary for when executing repeat after an undo (like with yoink)
+        call setpos("'[", s:savedStartPos)
+        call setpos("']", s:savedEndPos)
     endif
 
-    let oldVirtualEdit=&virtualedit
-    set virtualedit=onemore
-    let deletedMultipleLines = 0
-
-    " use keepjumps since we only want to change jumplist
-    " if it's multiline
-    if a:type ==# 'line'
-        let selectKeys = "'[V']"
-        let deletedMultipleLines = line("'[") != line("']")
-    elseif a:type ==# 'char'
-        let selectKeys = "`[v`]"
-    else
-        echom "Unexpected selection type"
-        exec "set virtualedit=". oldVirtualEdit
-        return
-    endif
-
-    exe "keepjump normal! " . selectKeys . exclRight . "\"_d"
-
-    if a:type ==# 'line'
-        let pasteIsMultiline = getreg(s:activeRegister) =~ '\n'
-
-        if deletedMultipleLines && !pasteIsMultiline
-            " This is a bit more intuitive IMO, otherwise the lines combine
-            exe "keepjump normal! O\<esc>"
-        endif
-    endif
-
-    exe "normal! \"" . s:activeRegister . "P"
-    exec "set virtualedit=". oldVirtualEdit
+    exe "normal! `[\"_c" . opMode . "`]\<C-R>" . s:activeRegister . "\<ESC>"
 
     if s:hasYoinkInstalled && s:activeRegister == yoink#getDefaultReg()
         call yoink#startUndoRepeatSwap()
