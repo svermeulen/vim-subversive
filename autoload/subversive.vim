@@ -41,13 +41,11 @@ function! subversive#substituteMotion(type, ...)
         endif
     endif
 
+    exe "normal! \"" . s:activeRegister . "P"
     exec "set virtualedit=". oldVirtualEdit
 
     if g:subversiveIntegrateWithYoink && s:activeRegister == yoink#getDefaultReg()
-        " We need to start the paste as a distinct operation here so that undo applies to it only
-        call feedkeys("\<plug>(YoinkPaste_P)", 'tm')
-    else
-        exe "normal! \"" . s:activeRegister . "P"
+        call yoink#startUndoRepeatSwap()
     endif
 endfunction
 
@@ -67,23 +65,19 @@ function! subversive#substituteLine(reg, count)
         exe "normal! 0\"_d$"
     endif
 
+    exe "normal! \"" . a:reg . "P"
+
     if g:subversiveIntegrateWithYoink && a:reg == yoink#getDefaultReg()
-        " We need to start the paste as a distinct operation here so that undo applies to it only
-        call feedkeys("\<plug>(YoinkPaste_P)", 'tm')
-    else
-        exe "normal! \"" . a:reg . "P"
+        call yoink#startUndoRepeatSwap()
     endif
 endfunction
 
 function! subversive#substituteToEndOfLine(reg, count)
     let count = a:count > 0 ? a:count : 1
-    exec "normal! \"_d$"
+    exec "normal! \"_d$\"" . a:reg . count . "p"
 
     if g:subversiveIntegrateWithYoink && a:reg == yoink#getDefaultReg()
-        " We need to start the paste as a distinct operation here so that undo applies to it only
-        call feedkeys(count . "\<plug>(YoinkPaste_p)", 'tm')
-    else
-        exec "normal! \"" . a:reg . count . "p"
+        call yoink#startUndoRepeatSwap()
     endif
 endfunction
 
