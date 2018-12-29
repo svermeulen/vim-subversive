@@ -34,7 +34,10 @@ function! subversive#substituteMotion(type, ...)
         call setpos("']", s:savedEndPos)
     endif
 
+    let previousPaste = &paste
+    set paste
     exe "normal! `[\"_c" . opMode . "`]\<C-R>" . s:activeRegister . "\<ESC>"
+    let &paste=previousPaste
 
     if s:hasYoinkInstalled && s:activeRegister == yoink#getDefaultReg()
         call yoink#startUndoRepeatSwap()
