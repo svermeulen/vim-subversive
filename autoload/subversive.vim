@@ -1,6 +1,13 @@
 
 let s:activeRegister = ''
 
+try
+    call yoink#getDefaultReg()
+    let s:hasYoinkInstalled = 1
+catch /\VUnknown function/
+    let s:hasYoinkInstalled = 0
+endtry
+
 function! subversive#onPreSubstitute(register)
     let s:activeRegister = a:register
 endfunction
@@ -44,7 +51,7 @@ function! subversive#substituteMotion(type, ...)
     exe "normal! \"" . s:activeRegister . "P"
     exec "set virtualedit=". oldVirtualEdit
 
-    if g:subversiveIntegrateWithYoink && s:activeRegister == yoink#getDefaultReg()
+    if s:hasYoinkInstalled && s:activeRegister == yoink#getDefaultReg()
         call yoink#startUndoRepeatSwap()
     endif
 endfunction
@@ -67,7 +74,7 @@ function! subversive#substituteLine(reg, count)
 
     exe "normal! \"" . a:reg . "P"
 
-    if g:subversiveIntegrateWithYoink && a:reg == yoink#getDefaultReg()
+    if s:hasYoinkInstalled && a:reg == yoink#getDefaultReg()
         call yoink#startUndoRepeatSwap()
     endif
 endfunction
@@ -76,7 +83,7 @@ function! subversive#substituteToEndOfLine(reg, count)
     let count = a:count > 0 ? a:count : 1
     exec "normal! \"_d$\"" . a:reg . count . "p"
 
-    if g:subversiveIntegrateWithYoink && a:reg == yoink#getDefaultReg()
+    if s:hasYoinkInstalled && a:reg == yoink#getDefaultReg()
         call yoink#startUndoRepeatSwap()
     endif
 endfunction

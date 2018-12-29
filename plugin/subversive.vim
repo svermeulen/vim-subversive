@@ -17,10 +17,6 @@ catch
     " and some plugin managers actually merge everything together
 endtry
 
-if !has_key(g:, "subversiveIntegrateWithYoink")
-    let g:subversiveIntegrateWithYoink = 0
-endif
-
 nnoremap <silent> <plug>(SubversiveSubstituteMotion) :<c-u>call subversive#onPreSubstitute(v:register)<cr>:set opfunc=subversive#substituteMotion<cr>g@
 nnoremap <silent> <plug>(SubversiveSubstituteToEndOfLine) :<c-u>call subversive#substituteToEndOfLine(v:register, v:count)<cr>:call repeat#set("\<plug>(SubversiveSubstituteToEndOfLine)")<cr>
 nnoremap <silent> <plug>(SubversiveSubstituteLine) :<c-u>call subversive#substituteLine(v:register, v:count)<cr>:call repeat#set("\<plug>(SubversiveSubstituteLine)")<cr>
