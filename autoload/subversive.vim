@@ -56,13 +56,13 @@ function! subversive#substituteMotion(type, ...)
 endfunction
 
 function! subversive#substituteLine(reg, count)
-    let count = a:count > 0 ? a:count : 1
+    let cnt = a:count > 0 ? a:count : 1
     let pasteIsMultiline = getreg(a:reg) =~ '\n'
 
     " If our paste is multiline, then delete the whole line
     " The given count applies only to the delete and not the paste
-    if count > 1 || pasteIsMultiline
-        exe "normal! ". count . "\"_dd"
+    if cnt > 1 || pasteIsMultiline
+        exe "normal! ". cnt . "\"_dd"
         if !pasteIsMultiline
             exe "normal! O\<esc>"
         endif
@@ -79,8 +79,8 @@ function! subversive#substituteLine(reg, count)
 endfunction
 
 function! subversive#substituteToEndOfLine(reg, count)
-    let count = a:count > 0 ? a:count : 1
-    exec "normal! \"_d$\"" . a:reg . count . "p"
+    let cnt = a:count > 0 ? a:count : 1
+    exec "normal! \"_d$\"" . a:reg . cnt . "p"
 
     if s:hasYoinkInstalled && a:reg == yoink#getDefaultReg()
         call yoink#startUndoRepeatSwap()
