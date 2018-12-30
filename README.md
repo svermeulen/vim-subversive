@@ -29,3 +29,12 @@ Note: Requires [vim-repeat](https://github.com/tpope/vim-repeat)
 
 Note that the swapping feature of [vim-yoink](https://github.com/svermeulen/nvim-yoink) will automatically work with the subsitute operations above in addition to just paste (if you have vim-yoink installed alongside vim-subversive)
 
+If you have both yoink and subversive installed then I suggest also adding visual mode maps to override paste:
+
+```viml
+xmap s <plug>(SubversiveSubstituteMotion)
+xmap p <plug>(SubversiveSubstituteMotion)
+xmap P <plug>(SubversiveSubstituteMotion)
+```
+
+This will allow you to use the post-paste swapping features of yoink after pasting in visual mode
