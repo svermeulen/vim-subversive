@@ -3,6 +3,7 @@ let s:activeRegister = ''
 let s:isFirstMotion = 0
 let s:savedStartPos = []
 let s:savedEndPos = []
+let s:visualMode = 0
 
 try
     call yoink#getDefaultReg()
@@ -11,9 +12,10 @@ catch /\VUnknown function/
     let s:hasYoinkInstalled = 0
 endtry
 
-function! subversive#onPreSubstitute(register)
+function! subversive#onPreSubstitute(register, visualMode)
     let s:activeRegister = a:register
     let s:isFirstMotion = 1
+    let s:visualMode = a:visualMode
 endfunction
 
 function! subversive#substituteMotion(type, ...)
@@ -24,14 +26,17 @@ function! subversive#substituteMotion(type, ...)
         let opMode = 'V'
     endif
 
+    let mark1 = s:visualMode ? "<" : "["
+    let mark2 = s:visualMode ? ">" : "]"
+
     if s:isFirstMotion
-        let s:savedStartPos = getpos("'[")
-        let s:savedEndPos = getpos("']")
+        let s:savedStartPos = getpos("'" . mark1)
+        let s:savedEndPos = getpos("'" . mark2)
         let s:isFirstMotion = 0
     else
         " Necessary for when executing repeat after an undo (like with yoink)
-        call setpos("'[", s:savedStartPos)
-        call setpos("']", s:savedEndPos)
+        call setpos("'" . mark1, s:savedStartPos)
+        call setpos("'" . mark2, s:savedEndPos)
     endif
 
     " There might be a better way to do this but this seems to work well
@@ -42,7 +47,7 @@ function! subversive#substituteMotion(type, ...)
     " Need to use paste mode to avoid auto indent etc
     let previousPaste = &paste
     set paste
-    exe "normal! `[\"_c" . opMode . "`]\<C-R>" . s:activeRegister . (endsWithNewLine ? "\<bs>" : "") . "\<ESC>"
+    exe "normal! `" . mark1 . "\"_c" . opMode . "`" . mark2 . "\<C-R>" . s:activeRegister . (endsWithNewLine ? "\<bs>" : "") . "\<ESC>"
     let &paste=previousPaste
 
     if s:hasYoinkInstalled && s:activeRegister == yoink#getDefaultReg()
