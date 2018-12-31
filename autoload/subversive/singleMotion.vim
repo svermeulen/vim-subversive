@@ -12,7 +12,7 @@ catch /\VUnknown function/
     let s:hasYoinkInstalled = 0
 endtry
 
-function! subversive#singleMotion#onPreSubstitute(register, visualMode)
+function! subversive#singleMotion#preSubstitute(register, visualMode)
     let s:activeRegister = a:register
     let s:isFirstMotion = 1
     let s:visualMode = a:visualMode
