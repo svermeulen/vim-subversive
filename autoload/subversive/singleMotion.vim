@@ -12,13 +12,13 @@ catch /\VUnknown function/
     let s:hasYoinkInstalled = 0
 endtry
 
-function! subversive#onPreSubstitute(register, visualMode)
+function! subversive#singleMotion#onPreSubstitute(register, visualMode)
     let s:activeRegister = a:register
     let s:isFirstMotion = 1
     let s:visualMode = a:visualMode
 endfunction
 
-function! subversive#substituteMotion(type, ...)
+function! subversive#singleMotion#substituteMotion(type, ...)
 
     let opMode = 'v'
 
@@ -55,7 +55,7 @@ function! subversive#substituteMotion(type, ...)
     endif
 endfunction
 
-function! subversive#substituteLine(reg, count)
+function! subversive#singleMotion#substituteLine(reg, count)
     let cnt = a:count > 0 ? a:count : 1
     let pasteIsMultiline = getreg(a:reg) =~ '\n'
 
@@ -78,7 +78,7 @@ function! subversive#substituteLine(reg, count)
     endif
 endfunction
 
-function! subversive#substituteToEndOfLine(reg, count)
+function! subversive#singleMotion#substituteToEndOfLine(reg, count)
     let cnt = a:count > 0 ? a:count : 1
     exec "normal! \"_d$\"" . a:reg . cnt . "p"
 
