@@ -1,7 +1,7 @@
 
 let s:searchText = ''
-let s:preStartPos = []
-let s:preWinView = {}
+let s:startCursorPos = []
+let s:startWinView = {}
 let s:activeRegister = ''
 let s:promptForReplaceText = 0
 
@@ -53,8 +53,8 @@ function! s:UpdateHighlight(searchText, startLine, endLine, startCol, endCol)
 endfunction
 
 function! subversive#doubleMotion#preSubstitute(register, promptForReplaceText)
-    let s:preStartPos = getpos('.')
-    let s:preWinView = winsaveview()
+    let s:startCursorPos = getpos('.')
+    let s:startWinView = winsaveview()
     let s:activeRegister = a:register
     let s:promptForReplaceText = a:promptForReplaceText
 endfunction
@@ -84,8 +84,8 @@ function! subversive#doubleMotion#selectTextMotion(type, ...)
 endfunction
 
 function! s:RestoreStartCursorPosition()
-    call setpos('.', s:preStartPos)
-    call winrestview(s:preWinView)
+    call setpos('.', s:startCursorPos)
+    call winrestview(s:startWinView)
 endfunction
 
 function! subversive#doubleMotion#selectRangeMotion(type)

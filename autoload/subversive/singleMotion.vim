@@ -1,6 +1,5 @@
 
 let s:activeRegister = ''
-let s:isFirstMotion = 0
 let s:savedStartPos = []
 let s:savedEndPos = []
 let s:visualMode = 0
@@ -14,7 +13,6 @@ endtry
 
 function! subversive#singleMotion#preSubstitute(register, visualMode)
     let s:activeRegister = a:register
-    let s:isFirstMotion = 1
     let s:visualMode = a:visualMode
 endfunction
 
@@ -26,19 +24,6 @@ function! subversive#singleMotion#substituteMotion(type, ...)
         let opMode = 'V'
     endif
 
-    let mark1 = s:visualMode ? "<" : "["
-    let mark2 = s:visualMode ? ">" : "]"
-
-    if s:isFirstMotion
-        let s:savedStartPos = getpos("'" . mark1)
-        let s:savedEndPos = getpos("'" . mark2)
-        let s:isFirstMotion = 0
-    else
-        " Necessary for when executing repeat after an undo (like with yoink)
-        call setpos("'" . mark1, s:savedStartPos)
-        call setpos("'" . mark2, s:savedEndPos)
-    endif
-
     " There might be a better way to do this but this seems to work well
     let endsWithNewLine = getreg(s:activeRegister) =~ '\v\n$'
 
@@ -47,7 +32,7 @@ function! subversive#singleMotion#substituteMotion(type, ...)
     " Need to use paste mode to avoid auto indent etc
     let previousPaste = &paste
     set paste
-    exe "normal! `" . mark1 . "\"_c" . opMode . "`" . mark2 . "\<C-R>" . s:activeRegister . (endsWithNewLine ? "\<bs>" : "") . "\<ESC>"
+    exe "normal! `" . (s:visualMode ? "<" : "[") . "\"_c" . opMode . "`" . (s:visualMode ? ">" : "]") . "\<C-R>" . s:activeRegister . (endsWithNewLine ? "\<bs>" : "") . "\<ESC>"
     let &paste=previousPaste
 
     if s:hasYoinkInstalled && s:activeRegister == yoink#getDefaultReg()
@@ -55,14 +40,18 @@ function! subversive#singleMotion#substituteMotion(type, ...)
     endif
 endfunction
 
-function! subversive#singleMotion#substituteLine(reg, count)
-    let cnt = a:count > 0 ? a:count : 1
-    let pasteIsMultiline = getreg(a:reg) =~ '\n'
+function! subversive#singleMotion#substituteLineSetup(reg, count)
+    let s:activeRegister = a:reg
+    let s:activeCount = a:count > 0 ? a:count : 1
+endfunction
+
+function! subversive#singleMotion#substituteLine(...)
+    let pasteIsMultiline = getreg(s:activeRegister) =~ '\n'
 
     " If our paste is multiline, then delete the whole line
     " The given count applies only to the delete and not the paste
-    if cnt > 1 || pasteIsMultiline
-        exe "normal! ". cnt . "\"_dd"
+    if s:activeCount > 1 || pasteIsMultiline
+        exe "normal! ". s:activeCount . "\"_dd"
         if !pasteIsMultiline
             exe "normal! O\<esc>"
         endif
@@ -71,18 +60,22 @@ function! subversive#singleMotion#substituteLine(reg, count)
         exe "normal! 0\"_d$"
     endif
 
-    exe "normal! \"" . a:reg . "P"
+    exe "normal! \"" . s:activeRegister . "P"
 
-    if s:hasYoinkInstalled && a:reg == yoink#getDefaultReg()
+    if s:hasYoinkInstalled && s:activeRegister == yoink#getDefaultReg()
         call yoink#startUndoRepeatSwap()
     endif
 endfunction
 
-function! subversive#singleMotion#substituteToEndOfLine(reg, count)
-    let cnt = a:count > 0 ? a:count : 1
-    exec "normal! \"_d$\"" . a:reg . cnt . "p"
+function! subversive#singleMotion#substituteToEndOfLineSetup(reg, count)
+    let s:activeRegister = a:reg
+    let s:activeCount = a:count > 0 ? a:count : 1
+endfunction
 
-    if s:hasYoinkInstalled && a:reg == yoink#getDefaultReg()
+function! subversive#singleMotion#substituteToEndOfLine(...)
+    exec "normal! \"_d$\"" . s:activeRegister . s:activeCount . "p"
+
+    if s:hasYoinkInstalled && s:activeRegister == yoink#getDefaultReg()
         call yoink#startUndoRepeatSwap()
     endif
 endfunction
