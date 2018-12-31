@@ -32,9 +32,10 @@ Example config:
 
 ```
 nmap <leader>s <plug>(SubversiveSubstituteOverRangeMotion)
+xmap <leader>s <plug>(SubversiveSubstituteOverRangeMotion)
 ```
 
-After adding this map, if we execute `<leader>s<motion1><motion2>`, then the text given by `motion1` should be replaced by the contents of the default register (or an explicit register if provided) in each line provided by `motion2`
+After adding this map, if we execute `<leader>s<motion1><motion2>`, then the text given by `motion1` should be replaced by the contents of the default register (or an explicit register if provided) in each line provided by `motion2`.  Or we can select `motion` in visual mode and then hit `<leader>s<motion2>`
 
 This can be very powerful. For example, you could execute `<leader>siwip` to replace all instances of the current word under the cursor that exist within the paragraph under the cursor.  Or `<leader>sl_` to replace all instances of the character under the cursor on the current line.
 
@@ -51,6 +52,7 @@ You'll often also want to perform a substitution with some new text (rather than
 
 ```
 nmap <leader>sp <plug>(SubversiveSubstituteOverRangeMotionWithPrompt)
+xmap <leader>sp <plug>(SubversiveSubstituteOverRangeMotionWithPrompt)
 ```
 
 This will behave similar to `<leader>s` except that instead of substituting with the contents of the given register, it will display a prompt in the status bar to provide the new text to use instead.  Note that we assume here that `p` does not have another meaning in operator mode (otherwise we will shadow that functionality when starting with `<leader>s`).
