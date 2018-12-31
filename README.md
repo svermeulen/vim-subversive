@@ -59,7 +59,7 @@ This will behave similar to `<leader>s` except that instead of substituting with
 
 ### Integration with yoink
 
-Note that if you install [vim-yoink](https://github.com/svermeulen/nvim-yoink) alongside vim-subversive, then the post-paste yoink swapping feature will automatically work with subversive single motion substitutions as well.
+Note that if you install [vim-yoink](https://github.com/svermeulen/vim-yoink) alongside vim-subversive, then the post-paste yoink swapping feature will automatically work with subversive single motion substitutions as well.
 
 If you want to enable yoink swapping with visual mode pastes as well you can do that with the following map:
 
