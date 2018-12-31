@@ -36,6 +36,7 @@ function! subversive#singleMotion#substituteMotion(type, ...)
     let &paste=previousPaste
 
     if s:hasYoinkInstalled && s:activeRegister == yoink#getDefaultReg()
+        call yoink#adjustLastChangeIfNecessary()
         call yoink#startUndoRepeatSwap()
     endif
 endfunction
