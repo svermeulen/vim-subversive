@@ -1,7 +1,7 @@
 
 ## Subversive
 
-This plugin provides two new operator motions for vim to make quick substitutions very easy.  It contains no default mappings and will have no affect until you add your own maps to it.
+This vim plugin provides two new operator motions to make quick substitutions very easy.  It contains no default mappings and will have no affect until you add your own maps to it.
 
 Note: Requires [vim-repeat](https://github.com/tpope/vim-repeat)
 
@@ -47,9 +47,9 @@ Or, you could add a text object for the entire contents of the buffer like this:
 onoremap if :exec "normal! ggVG"<cr>
 ```
 
-And then executing `<leader>siwie` to replace all instances of the current word under the cursor in the entire buffer.
+And then execute `<leader>siwie` to replace all instances of the current word under the cursor in the entire buffer.
 
-You'll often also want to perform a substitution with some new text which you can do with the following map:
+You'll often also want to perform a substitution with some new text (rather than always taking from the default register) which you can do with the following map:
 
 ```
 nmap <leader>sp <plug>(SubversiveSubstituteOverRangeMotionWithPrompt)
@@ -59,7 +59,7 @@ This will behave similar to `<leader>s` except that instead of substituting with
 
 ### Integration with yoink
 
-Note that if you install [vim-yoink](https://github.com/svermeulen/nvim-yoink) alongside vim-subversive, then the post-paste yoink swapping feature will automatically work with subversive substitutions as well.
+Note that if you install [vim-yoink](https://github.com/svermeulen/nvim-yoink) alongside vim-subversive, then the post-paste yoink swapping feature will automatically work with subversive single motion substitutions as well.
 
 If you want to enable yoink swapping with visual mode pastes as well you can do that with the following map:
 
