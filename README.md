@@ -37,14 +37,14 @@ Or, you could add a text object for the entire contents of the buffer like this:
 
 ```viml
 " ie = inner entire buffer
-onoremap if :exec "normal! ggVG"<cr>
+onoremap ie :exec "normal! ggVG"<cr>
 ```
 
 And then execute `<leader>siwie` to replace all instances of the current word under the cursor in the entire buffer.
 
 You can also avoid the prompt by explicitly providing a register to use to pull the replacement text from.  For example, `"a<leader>siwip` will immediately replace all instances of the current word under the cursor with the contents of register `a` that exist within the current paragraph.
 
-If instead you want to always use registers and never prompt, you can do that to by using the NoPrompt plug variants:
+If instead you want to always use registers and never prompt, you can do that too by using the NoPrompt plug variants:
 
 ```viml
 nmap <leader>s <plug>(SubversiveSubstituteOverRangeMotionNoPrompt)
@@ -53,13 +53,15 @@ xmap <leader>s <plug>(SubversiveSubstituteOverRangeMotionNoPrompt)
 
 In this case, it will always use the default register instead of prompting when an explicit register is not given.
 
-You might also consider adding a shortcut for the current word under the cursor, if it is a common operation. For example:
+You might also consider adding a shortcut for the current word under the cursor if it is a common operation. For example:
 
 ```viml
 nmap <leader>ss <plug>(SubversiveSubstituteOverRangeMotion)iw
 ```
 
-This will allow us to just execute `<leader>ssip` rather than `<leader>siwip`
+This will allow you to just execute `<leader>ssip` rather than `<leader>siwip`
+
+Note that to really take advantage of the substitute over range motion, it is helpful to add custom text objects in addition to just the vim built-in ones like current paragraph (`ip`), current sentence (`is`), or current line (`_`).  Custom text objects such as current indent level, current method, current class, entire buffer, current scroll page, etc. can all help a lot here.
 
 ## Integration With abolish.vim
 
@@ -70,7 +72,7 @@ nmap <leader>sc <plug>(SubversiveSubvertOverRangeMotion)
 xmap <leader>sc <plug>(SubversiveSubvertOverRangeMotion)
 ```
 
-Here we can think of sc as 'Substitute Case-insensitive'.  This will behave the same as `<leader>s` except that it will perform an abolish 'subvert' instead of using vim's built in substitution command.  This will allow the replace to apply regardless of case.  For example, given the following text:
+Here we can think of sc as 'Substitute Case-insensitive'.  This will behave the same as `<leader>s` except that it will perform an abolish 'subvert' instead of using vim's built in substitution command.  This will apply the substitution and preserve whatever case the original word has.  For example, given the following text:
 
 ```csharp
 class FooManager
@@ -123,9 +125,9 @@ xmap <leader>sc <plug>(SubversiveSubvertOverRangeMotionNoPrompt)
 
 ### Integration with yoink
 
-Note that if you install [vim-yoink](https://github.com/svermeulen/vim-yoink) alongside vim-subversive, then the post-paste yoink swapping feature will automatically work with subversive single motion substitutions as well.
+Note that if you install [vim-yoink](https://github.com/svermeulen/vim-yoink) alongside vim-subversive, then the post-paste yoink swapping feature will automatically work with subversive (single motion) substitutions as well.  In other words, assuming the default mappings, you can execute `siw` then hit `<c-n>` / `<c-p>` to swap between different yanks.
 
-If you want to enable yoink swapping with visual mode pastes as well you can do that with the following map:
+Subversive also provides a plug to replace visual mode paste to provide post past swapping as well:
 
 ```viml
 xmap s <plug>(SubversiveSubstituteMotion)
@@ -133,9 +135,5 @@ xmap p <plug>(SubversiveSubstituteMotion)
 xmap P <plug>(SubversiveSubstituteMotion)
 ```
 
-Now if you hit `p` while in visual mode you can cycle between pastes just like when pasting in normal mode.
-
-## Other Notes
-
-- Note that to really take advantage of the substitute over range motion above, it is helpful to add custom text objects in addition to just the vim built-in ones like current paragraph (`ip`), current sentence (`is`), or current line (`_`).  Custom text objects such as current indent level, current method, current class, entire buffer, current scroll page, etc. can all help a lot here.
+Now if you hit `p` while in visual mode you can swap between yanks just like when pasting in normal mode.
 

@@ -1,4 +1,6 @@
 subversive	subversive.txt	/*subversive*
+subversive-abolish-integration	subversive.txt	/*subversive-abolish-integration*
 subversive-substitute-motion	subversive.txt	/*subversive-substitute-motion*
 subversive-substitute-over-range-motion	subversive.txt	/*subversive-substitute-over-range-motion*
+subversive-yoink-integration	subversive.txt	/*subversive-yoink-integration*
 subversive.txt	subversive.txt	/*subversive.txt*
