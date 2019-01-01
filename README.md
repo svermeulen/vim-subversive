@@ -1,5 +1,5 @@
 
-## Subversive
+# Subversive
 
 This vim plugin provides two new operator motions to make quick substitutions very easy.  It contains no default mappings and will have no affect until you add your own maps to it.
 
@@ -7,7 +7,7 @@ This vim plugin provides two new operator motions to make quick substitutions ve
 
 Example config:
 
-```
+```viml
 " s for substitute
 nmap s <plug>(SubversiveSubstituteMotion)
 nmap ss <plug>(SubversiveSubstituteLine)
@@ -15,7 +15,7 @@ nmap S <plug>(SubversiveSubstituteToEndOfLine)
 ```
 
 Or possibly:
-```
+```viml
 " r for replace
 nmap r <plug>(SubversiveSubstituteMotion)
 nmap rr <plug>(SubversiveSubstituteLine)
@@ -30,7 +30,7 @@ Another interesting feature of subversive is support for specifying both the tex
 
 Example config:
 
-```
+```viml
 nmap <leader>s <plug>(SubversiveSubstituteOverRangeMotion)
 xmap <leader>s <plug>(SubversiveSubstituteOverRangeMotion)
 ```
@@ -41,7 +41,7 @@ This can be very powerful. For example, you could execute `<leader>siwip` to rep
 
 Or, you could add a text object for the entire contents of the buffer like this:
 
-```
+```viml
 " ie = inner entire buffer
 onoremap if :exec "normal! ggVG"<cr>
 ```
@@ -52,7 +52,7 @@ You can also avoid the prompt by explicitly providing a register to use to pull 
 
 If instead you want to always use registers and never prompt, you can do that to by using the NoPrompt plug variants:
 
-```
+```viml
 nmap <leader>s <plug>(SubversiveSubstituteOverRangeMotionNoPrompt)
 xmap <leader>s <plug>(SubversiveSubstituteOverRangeMotionNoPrompt)
 ```
@@ -63,7 +63,7 @@ In this case, it will always use the default register instead of prompting when 
 
 If you have also installed [vim-abolish](https://github.com/tpope/vim-abolish), then you might consider adding something similar to the following mapping as well:
 
-```
+```viml
 nmap <leader>sc <plug>(SubversiveSubvertOverRangeMotion)
 xmap <leader>sc <plug>(SubversiveSubvertOverRangeMotion)
 ```
@@ -114,7 +114,7 @@ This can be a very convenient way to perform quick renames.
 
 Note that there is also a NoPrompt variation of this plug as well if you prefer that:
 
-```
+```viml
 nmap <leader>sc <plug>(SubversiveSubvertOverRangeMotionNoPrompt)
 xmap <leader>sc <plug>(SubversiveSubvertOverRangeMotionNoPrompt)
 ```
