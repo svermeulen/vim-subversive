@@ -35,6 +35,14 @@ function! subversive#singleMotion#substituteMotion(type, ...)
     exe "normal! `" . (s:visualMode ? "<" : "[") . "\"_c" . opMode . "`" . (s:visualMode ? ">" : "]") . "\<C-R>" . s:activeRegister . (endsWithNewLine ? "\<bs>" : "") . "\<ESC>"
     let &paste=previousPaste
 
+    " For some reason the change operation places the ] mark after the change instead of at the last
+    " character of the change so let's fix this
+    " This becomes visible when yoink#adjustLastChangeIfNecessary is called and g:yoinkMoveCursorToEndOfPaste 
+    " is also set to true but might as well do it in all cases for consistency
+    let endChangePos = getpos("']")
+    let endChangePos[2] = max([0, endChangePos[2] - 1])
+    call setpos("']", endChangePos)
+
     if s:hasYoinkInstalled && s:activeRegister == yoink#getDefaultReg()
         call yoink#adjustLastChangeIfNecessary()
         call yoink#startUndoRepeatSwap()
