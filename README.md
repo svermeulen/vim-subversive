@@ -132,3 +132,8 @@ xmap P <plug>(SubversiveSubstituteMotion)
 ```
 
 Now if you hit `p` while in visual mode you can cycle between pastes just like when pasting in normal mode.
+
+## Other Notes
+
+- Note that to really take advantage of the substitute over range motion above, it is helpful to add custom text objects in addition to just the vim built-in ones like current paragraph (`ip`), current sentence (`is`), or current line (`_`).  Custom text objects such as current indent level, current method, current class, entire buffer, current scroll page, etc. can all help a lot here.
+
