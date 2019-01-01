@@ -1,7 +1,7 @@
 
 # Subversive
 
-Subversive provides two new operator motions to make it very easy to perform quick substitutions.  It contains no default mappings and will have no affect until you add your own maps to it.
+Subversive provides two new operator motions to make it very easy to perform quick substitutions.  It contains no default mappings and will have no effect until you add your own maps to it.
 
 ## Substitution Motion
 
