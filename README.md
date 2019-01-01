@@ -52,7 +52,7 @@ Then we move to the `Foo` part of `AddFoo` and execute `<leader>seie` and enter 
 
 Note that to really take advantage of the substitute over range motion, it is helpful to add custom text objects in addition to just the vim built-in ones like current paragraph (`ip`), current sentence (`is`), or current line (`_`).  Custom text objects such as current indent level, current method, current class, entire buffer, current scroll page, etc. can all help a lot here.
 
-## What if I don't want to use the prompt and want to directly replace with a register value?
+### What if I don't want to use the prompt and want to directly replace with a register value?
 
 If you provide an explicit register to any fo the substitute motions above it will not prompt and instead will use the contents of the given register.  For example, `"a<leader>siwip` will immediately replace all instances of the current word under the cursor with the contents of register `a` that exist within the current paragraph.
 

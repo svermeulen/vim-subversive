@@ -170,7 +170,6 @@ function! subversive#doubleMotion#selectRangeMotion(type)
         let commandStr .= 'I'
     endif
 
-    echom commandStr
     exec commandStr
     call s:RestoreStartCursorPosition()
 endfunction
