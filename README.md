@@ -28,10 +28,10 @@ Example config:
 nmap <leader>s <plug>(SubversiveSubstituteRange)
 xmap <leader>s <plug>(SubversiveSubstituteRange)
 
-nmap <leader>ss <plug>(SubversiveSubvertWordRange)
+nmap <leader>ss <plug>(SubversiveSubstituteWordRange)
 ```
 
-After adding this map, if we execute `<leader>s<motion1><motion2>` then enter some text into a prompt in the status bar, then the text given by `motion1` should be replaced by the text we entered in the prompt for each line provided by `motion2`.  Alternatively, we can also select `motion1` in visual mode and then hit `<leader>s<motion2>` for the same effect.
+After adding this map, if you execute `<leader>s<motion1><motion2>` then enter some text into a prompt in the status bar, then the text given by `motion1` should be replaced by the text we entered in the prompt for each line provided by `motion2`.  Alternatively, we can also select `motion1` in visual mode and then hit `<leader>s<motion2>` for the same effect.
 
 This can be very powerful. For example, you could execute `<leader>siwip` to replace all instances of the current word under the cursor that exist within the paragraph under the cursor.  Or `<leader>sl_` to replace all instances of the character under the cursor on the current line.
 
@@ -64,12 +64,12 @@ If this isn't enough, you can also use the following plugs instead:
 nmap <leader>s <plug>(SubversiveSubstituteRangeNoPrompt)
 xmap <leader>s <plug>(SubversiveSubstituteRangeNoPrompt)
 
-nmap <leader>ss <plug>(SubversiveSubvertWordRangeNoPrompt)
+nmap <leader>ss <plug>(SubversiveSubstituteWordRangeNoPrompt)
 ```
 
 Which will work identically to the previous plugs except instead of prompting it will use the default register.
 
-## Integration With abolish.vim
+## Integration with abolish.vim
 
 If you have also installed [vim-abolish](https://github.com/tpope/vim-abolish), then you might consider adding something similar to the following mapping as well:
 
