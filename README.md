@@ -27,34 +27,36 @@ Example config:
 ```viml
 nmap <leader>s <plug>(SubversiveSubstituteRange)
 xmap <leader>s <plug>(SubversiveSubstituteRange)
+
+nmap <leader>ss <plug>(SubversiveSubvertWordRange)
 ```
 
-After adding this map, if we execute `<leader>s<motion1><motion2>`, then enter some text into a prompt in the status bar, then the text given by `motion1` should be replaced by the text we entered for each line provided by `motion2`.  Alternatively, we can also select `motion1` in visual mode and then hit `<leader>s<motion2>` for the same effect.
+After adding this map, if we execute `<leader>s<motion1><motion2>` then enter some text into a prompt in the status bar, then the text given by `motion1` should be replaced by the text we entered in the prompt for each line provided by `motion2`.  Alternatively, we can also select `motion1` in visual mode and then hit `<leader>s<motion2>` for the same effect.
 
 This can be very powerful. For example, you could execute `<leader>siwip` to replace all instances of the current word under the cursor that exist within the paragraph under the cursor.  Or `<leader>sl_` to replace all instances of the character under the cursor on the current line.
 
-Or, you could add a text object for the entire contents of the buffer like this:
+The `<leader>ss` mapping is used as a shortcut to replace the current word under the cursor.  This will allow you to execute `<leader>ssip` to replace the word under cursor in the current paragraph.  Note that this matches **complete** words so is different from `<leader>siwip`, which will not require that there be word boundaries on each match.
+
+Let's see it in action:
+
+![Substitute Over Range Example](https://i.imgur.com/gDqNAA8.gif)
+
+In this gif, we first rename the local `foo` parameter by executing `<leader>ssom` then entering `bar` in the prompt (note that `om` is a custom motion that stands for 'outer c# method' and is not provided by this plugin).  And then we switch to visual mode select the `foo` part of `_foos` then execute `<leader>sie` and once again enter `bar` into the prompt.  `ie` is again a custom motion that stands for `entire buffer` and is simply:
 
 ```viml
 " ie = inner entire buffer
 onoremap ie :exec "normal! ggVG"<cr>
 ```
 
-And then execute `<leader>siwie` to replace all instances of the current word under the cursor in the entire buffer.  Or `<leader>siwgg` to replace only those instances at or before the cursor position.  Etc.
-
-You can also avoid the prompt by explicitly providing a register to use to pull the replacement text from.  For example, `"a<leader>siwip` will immediately replace all instances of the current word under the cursor with the contents of register `a` that exist within the current paragraph.
-
-You might also consider adding a shortcut for the current word under the cursor:
-
-```viml
-nmap <space>ss <plug>(SubversiveSubvertWordRange)
-```
-
-This will allow you to just execute `<leader>ssip` to replace the word under cursor in the current paragraph.  Note that this matches **complete** words so is different from `<leader>siwip`.  Given `foo` underneath the cursor, the latter would replace the foo in `foobar` but the former would not (because there isn't a word boundary)
+Then we move to the `Foo` part of `AddFoo` and execute `<leader>seie` and enter `Bar`.  Then finally do the same for the fully capitalized `FOOS`.
 
 Note that to really take advantage of the substitute over range motion, it is helpful to add custom text objects in addition to just the vim built-in ones like current paragraph (`ip`), current sentence (`is`), or current line (`_`).  Custom text objects such as current indent level, current method, current class, entire buffer, current scroll page, etc. can all help a lot here.
 
-Some people find that they prefer to avoid the prompt entirely in favour of just always using the default register instead (unless an explicit register is provided).  The plugs `<plug>(SubversiveSubvertWordRangeNoPrompt)` and `<plug>(SubversiveSubstituteRangeNoPrompt)` can be used instead of the above ones if this is your preference.
+## What if I don't want to use the prompt and want to directly replace with a register value?
+
+If you provide an explicit register to any fo the substitute motions above it will not prompt and instead will use the contents of the given register.  For example, `"a<leader>siwip` will immediately replace all instances of the current word under the cursor with the contents of register `a` that exist within the current paragraph.
+
+Even with support for using an explicit register, some people still find that they would prefer to avoid the prompt in favour of the default register instead.   There there are alternative plugs that can be used in this case: `<plug>(SubversiveSubvertWordRangeNoPrompt)` and `<plug>(SubversiveSubstituteRangeNoPrompt)`
 
 ## Integration With abolish.vim
 
