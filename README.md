@@ -14,19 +14,13 @@ nmap ss <plug>(SubversiveSubstituteLine)
 nmap S <plug>(SubversiveSubstituteToEndOfLine)
 ```
 
-Or possibly:
-```viml
-" r for replace
-nmap r <plug>(SubversiveSubstituteMotion)
-nmap rr <plug>(SubversiveSubstituteLine)
-nmap R <plug>(SubversiveSubstituteToEndOfLine)
-```
+Note that in this case you will be shadowing the change character key `s` so you would have to use the longer form `cl`
 
 After adding these maps, you can then execute `s<motion>` to substitute the text object provided by the motion with the contents of the default register (or an explicit register if provided)
 
 ## Substitution Over Range Motion
 
-Another interesting feature of subversive is support for specifying both the text to replace and the line range over which to apply the change by using multiple consecutive motions.
+Another interesting operator provided by subversive allows specifying both the text to replace and the line range over which to apply the change by using multiple consecutive motions.
 
 Example config:
 
