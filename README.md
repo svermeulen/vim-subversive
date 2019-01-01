@@ -1,7 +1,7 @@
 
 # Subversive
 
-This vim plugin provides two new operator motions to make quick substitutions very easy.  It contains no default mappings and will have no affect until you add your own maps to it.
+Subversive provides two new operator motions to make quick substitutions very easy.  It contains no default mappings and will have no affect until you add your own maps to it.
 
 ## Substitution Motion
 
