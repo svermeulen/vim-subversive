@@ -39,7 +39,7 @@ The `<leader>ss` mapping is used as a shortcut to replace the current word under
 
 Let's see it in action:
 
-![Substitute Over Range Example](https://i.imgur.com/gDqNAA8.gif)
+![Substitute Over Range Example](https://i.imgur.com/0qh2sOU.gif)
 
 In this gif, we first rename the local `foo` parameter by executing `<leader>ssom` then entering `bar` in the prompt (note that `om` is a custom motion that stands for 'outer c# method' and is not provided by this plugin).  And then we switch to visual mode select the `foo` part of `_foos` then execute `<leader>sie` and once again enter `bar` into the prompt.  `ie` is again a custom motion that stands for `entire buffer` and is simply:
 
