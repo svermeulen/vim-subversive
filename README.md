@@ -40,7 +40,7 @@ Or, you could add a text object for the entire contents of the buffer like this:
 onoremap ie :exec "normal! ggVG"<cr>
 ```
 
-And then execute `<leader>siwie` to replace all instances of the current word under the cursor in the entire buffer.
+And then execute `<leader>siwie` to replace all instances of the current word under the cursor in the entire buffer.  Or `<leader>siwgg` to replace only those instances at or before the cursor position.  Etc.
 
 You can also avoid the prompt by explicitly providing a register to use to pull the replacement text from.  For example, `"a<leader>siwip` will immediately replace all instances of the current word under the cursor with the contents of register `a` that exist within the current paragraph.
 
