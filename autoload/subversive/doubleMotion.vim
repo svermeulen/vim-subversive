@@ -4,6 +4,7 @@ let s:startCursorPos = []
 let s:startWinView = {}
 let s:activeRegister = ''
 let s:promptForReplaceText = 0
+let s:useAbolish = 0
 
 function! s:ClearHighlight()
     augroup SubversiveClearHighlight
@@ -21,42 +22,43 @@ function! s:AttachClearHighlightAutoCommands()
     augroup END
 endfunction
 
-function! s:UpdateHighlight(searchText, startLine, endLine, startCol, endCol)
+function! s:UpdateHighlight(searchText, startLine, endLine, startCol, endCol, caseSensitive)
     call s:ClearHighlight()
     call s:AttachClearHighlightAutoCommands()
 
-    let searchText = '\V\C' . escape(a:searchText, '\')
+    let searchQuery = '\V' . (a:caseSensitive ? '\C' : '\c') . escape(a:searchText, '\')
 
     if a:startLine != -1
-        let searchText .= '\%>' . max([0, a:startLine-1]) . 'l'
+        let searchQuery .= '\%>' . max([0, a:startLine-1]) . 'l'
     endif
 
     if a:endLine != -1
-        let searchText .= '\%<' . (a:endLine+1) . 'l'
+        let searchQuery .= '\%<' . (a:endLine+1) . 'l'
     endif
 
     if a:startCol == a:endCol
         if a:startCol != -1
-            let searchText .= '\%' . (a:startCol+1) . 'c'
+            let searchQuery .= '\%' . (a:startCol+1) . 'c'
         endif
     else
         if a:startCol != -1
-            let searchText .= '\%>' . (a:startCol+1) . 'c'
+            let searchQuery .= '\%>' . (a:startCol+1) . 'c'
         endif
 
         if a:endCol != -1
-            let searchText .= '\%<' . (a:endCol+2) . 'c'
+            let searchQuery .= '\%<' . (a:endCol+2) . 'c'
         endif
     endif
 
-    let w:patternHighlightId = matchadd('Search', searchText, 2, get(w:, 'patternHighlightId', -1))
+    let w:patternHighlightId = matchadd('Search', searchQuery, 2, get(w:, 'patternHighlightId', -1))
 endfunction
 
-function! subversive#doubleMotion#preSubstitute(register, promptForReplaceText)
+function! subversive#doubleMotion#preSubstitute(register, promptForReplaceText, useAbolish)
     let s:startCursorPos = getpos('.')
     let s:startWinView = winsaveview()
     let s:activeRegister = a:register
     let s:promptForReplaceText = a:promptForReplaceText
+    let s:useAbolish = a:useAbolish
 endfunction
 
 function! subversive#doubleMotion#selectTextMotion(type, ...)
@@ -78,7 +80,7 @@ function! subversive#doubleMotion#selectTextMotion(type, ...)
     let line = getline(start[1])
     let s:searchText = line[start[2]-1:end[2]-1]
 
-    call s:UpdateHighlight(s:searchText, start[1], start[1], start[2], end[2])
+    call s:UpdateHighlight(s:searchText, start[1], start[1], start[2], end[2], 1)
 
     call feedkeys("\<plug>(_SubversiveSubstituteOverAreaMotionRange)", "m")
 endfunction
@@ -88,13 +90,24 @@ function! s:RestoreStartCursorPosition()
     call winrestview(s:startWinView)
 endfunction
 
+function! s:getDefaultReg()
+    let clipboardFlags = split(&clipboard, ',')
+    if index(clipboardFlags, 'unnamedplus') >= 0
+        return "+"
+    elseif index(clipboardFlags, 'unnamed') >= 0
+        return "*"
+    else
+        return "\""
+    endif
+endfunction
+
 function! subversive#doubleMotion#selectRangeMotion(type)
 
     let startLine = line("'[")
     let endLine = line("']")
 
-    if s:promptForReplaceText
-        call s:UpdateHighlight(s:searchText, startLine, endLine, -1, -1)
+    if s:activeRegister == s:getDefaultReg() && s:promptForReplaceText
+        call s:UpdateHighlight(s:searchText, startLine, endLine, -1, -1, !s:useAbolish)
 
         " Need to do this here in addition to after the substitution because the second motion
         " can be large (ie the whole file)
@@ -117,7 +130,17 @@ function! subversive#doubleMotion#selectRangeMotion(type)
         endif
     endif
 
-    exec startLine . ',' . endLine . 's/\V\C'. escape(s:searchText, '/\') .'/'. escape(replaceText, '/\') .'/'
+    let commandStr = startLine . ',' . endLine
+
+    if s:useAbolish
+        let commandStr .= 'S/'
+    else
+        let commandStr .= 's/\V\C'
+    endif
+
+    let commandStr .= escape(s:searchText, '/\') .'/'. escape(replaceText, '/\') .'/'
+
+    exec commandStr
     call s:RestoreStartCursorPosition()
 endfunction
 

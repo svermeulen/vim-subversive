@@ -16,11 +16,17 @@ xnoremap <silent> <plug>(SubversiveSubstituteMotion) :<c-u>call subversive#singl
 nnoremap <silent> <plug>(SubversiveSubstituteToEndOfLine) :<c-u>call subversive#singleMotion#substituteToEndOfLineSetup(v:register, v:count)<cr>:set opfunc=subversive#singleMotion#substituteToEndOfLine<cr>g@l
 nnoremap <silent> <plug>(SubversiveSubstituteLine) :<c-u>call subversive#singleMotion#substituteLineSetup(v:register, v:count)<cr>:set opfunc=subversive#singleMotion#substituteLine<cr>g@l
 
-nnoremap <silent> <plug>(SubversiveSubstituteOverRangeMotion) :<c-u>call subversive#doubleMotion#preSubstitute(v:register, 0)<cr>:set opfunc=subversive#doubleMotion#selectTextMotion<cr>g@
-xnoremap <silent> <plug>(SubversiveSubstituteOverRangeMotion) :<c-u>call subversive#doubleMotion#preSubstitute(v:register, 0)<cr><esc>:call subversive#doubleMotion#selectTextMotion('char', 1)<cr>
+nnoremap <silent> <plug>(SubversiveSubstituteOverRangeMotion) :<c-u>call subversive#doubleMotion#preSubstitute(v:register, 1, 0)<cr>:set opfunc=subversive#doubleMotion#selectTextMotion<cr>g@
+xnoremap <silent> <plug>(SubversiveSubstituteOverRangeMotion) :<c-u>call subversive#doubleMotion#preSubstitute(v:register, 1, 0)<cr><esc>:call subversive#doubleMotion#selectTextMotion('char', 1)<cr>
 
-nnoremap <silent> <plug>(SubversiveSubstituteOverRangeMotionWithPrompt) :<c-u>call subversive#doubleMotion#preSubstitute(v:register, 1)<cr>:set opfunc=subversive#doubleMotion#selectTextMotion<cr>g@
-xnoremap <silent> <plug>(SubversiveSubstituteOverRangeMotionWithPrompt) :<c-u>call subversive#doubleMotion#preSubstitute(v:register, 1)<cr><esc>:call subversive#doubleMotion#selectTextMotion('char', 1)<cr>
+nnoremap <silent> <plug>(SubversiveSubstituteOverRangeMotionNoPrompt) :<c-u>call subversive#doubleMotion#preSubstitute(v:register, 0, 0)<cr>:set opfunc=subversive#doubleMotion#selectTextMotion<cr>g@
+xnoremap <silent> <plug>(SubversiveSubstituteOverRangeMotionNoPrompt) :<c-u>call subversive#doubleMotion#preSubstitute(v:register, 0, 0)<cr><esc>:call subversive#doubleMotion#selectTextMotion('char', 1)<cr>
+
+nnoremap <silent> <plug>(SubversiveSubvertOverRangeMotionNoPrompt) :<c-u>call subversive#doubleMotion#preSubstitute(v:register, 1, 1)<cr>:set opfunc=subversive#doubleMotion#selectTextMotion<cr>g@
+xnoremap <silent> <plug>(SubversiveSubvertOverRangeMotionNoPrompt) :<c-u>call subversive#doubleMotion#preSubstitute(v:register, 0, 1)<cr><esc>:call subversive#doubleMotion#selectTextMotion('char', 1)<cr>
+
+nnoremap <silent> <plug>(SubversiveSubvertOverRangeMotion) :<c-u>call subversive#doubleMotion#preSubstitute(v:register, 1, 1)<cr>:set opfunc=subversive#doubleMotion#selectTextMotion<cr>g@
+xnoremap <silent> <plug>(SubversiveSubvertOverRangeMotion) :<c-u>call subversive#doubleMotion#preSubstitute(v:register, 1, 1)<cr><esc>:call subversive#doubleMotion#selectTextMotion('char', 1)<cr>
 
 " For internal use only
 nnoremap <silent> <plug>(_SubversiveSubstituteOverAreaMotionRange) :<c-u>set opfunc=subversive#doubleMotion#selectRangeMotion<cr>g@

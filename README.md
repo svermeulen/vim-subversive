@@ -35,7 +35,7 @@ nmap <leader>s <plug>(SubversiveSubstituteOverRangeMotion)
 xmap <leader>s <plug>(SubversiveSubstituteOverRangeMotion)
 ```
 
-After adding this map, if we execute `<leader>s<motion1><motion2>`, then the text given by `motion1` should be replaced by the contents of the default register (or an explicit register if provided) in each line provided by `motion2`.  Or we can select `motion` in visual mode and then hit `<leader>s<motion2>`
+After adding this map, if we execute `<leader>s<motion1><motion2>`, then we should get a prompt in the status bar that says `Substitute With:`.  After entering some text, then the text given by `motion1` should be replaced by the text we entered for each line provided by `motion2`.  Alternatively, we can also select `motion1` in visual mode and then hit `<leader>s<motion2>` for the same effect.
 
 This can be very powerful. For example, you could execute `<leader>siwip` to replace all instances of the current word under the cursor that exist within the paragraph under the cursor.  Or `<leader>sl_` to replace all instances of the character under the cursor on the current line.
 
@@ -48,14 +48,76 @@ onoremap if :exec "normal! ggVG"<cr>
 
 And then execute `<leader>siwie` to replace all instances of the current word under the cursor in the entire buffer.
 
-You'll often also want to perform a substitution with some new text (rather than always taking from the default register) which you can do with the following map:
+You can also avoid the prompt by explicitly providing a register to use to pull the replacement text from.  For example, `"a<leader>siwip` will immediately replace all instances of the current word under the cursor with the contents of register `a` that exist within the current paragraph.
+
+If instead you want to always use registers and never prompt, you can do that to by using the NoPrompt plug variants:
 
 ```
-nmap <leader>sp <plug>(SubversiveSubstituteOverRangeMotionWithPrompt)
-xmap <leader>sp <plug>(SubversiveSubstituteOverRangeMotionWithPrompt)
+nmap <leader>s <plug>(SubversiveSubstituteOverRangeMotionNoPrompt)
+xmap <leader>s <plug>(SubversiveSubstituteOverRangeMotionNoPrompt)
 ```
 
-This will behave similar to `<leader>s` except that instead of substituting with the contents of the given register, it will display a prompt in the status bar to provide the new text to use instead.  Note that we assume here that `p` does not have another meaning in operator mode (otherwise we will shadow that functionality when starting with `<leader>s`).
+In this case, it will always use the default register instead of prompting when an explicit register is not given.
+
+## Integration With [vim-abolish](https://github.com/tpope/vim-abolish)
+
+If you have also installed [vim-abolish](https://github.com/tpope/vim-abolish), then you might consider adding something similar to the following mapping as well:
+
+```
+nmap <leader>sc <plug>(SubversiveSubvertOverRangeMotion)
+xmap <leader>sc <plug>(SubversiveSubvertOverRangeMotion)
+```
+
+Here we can think of sc as 'Substitute Case-insensitive'.  This will behave the same as `<leader>s` except that it will perform an abolish 'subvert' instead of using vim's built in substitution command.  This will allow the replace to apply regardless of case.  For example, given the following text:
+
+```csharp
+class FooManager
+{
+    static int MAX_FOOS = 3;
+
+    List<^Foo> _foos = new List<Foo>();
+
+    public void AddFoo(Foo foo)
+    {
+        if (_foos.Count >= MAX_FOOS)
+        {
+            throw new Exception("Too many foos");
+        }
+
+        _foos.Add(foo);
+    }
+}
+```
+
+Assuming our cursor is at the `^` character, if we execute `<leader>sceie` (assuming we've also added the `ie` operator from above) then enter `Bar` then our file becomes:
+
+```csharp
+class BarManager
+{
+    static int MAX_BARS = 3;
+
+    List<^Bar> _bars = new List<Bar>();
+
+    public void AddBar(Bar bar)
+    {
+        if (_bars.Count >= MAX_BARS)
+        {
+            throw new Exception("Too many bars");
+        }
+
+        _bars.Add(bar);
+    }
+}
+```
+
+This can be a very convenient way to perform quick renames.
+
+Note that there is also a NoPrompt variation of this plug as well if you prefer that:
+
+```
+nmap <leader>sc <plug>(SubversiveSubvertOverRangeMotionNoPrompt)
+xmap <leader>sc <plug>(SubversiveSubvertOverRangeMotionNoPrompt)
+```
 
 ### Integration with yoink
 
