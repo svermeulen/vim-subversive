@@ -6,6 +6,7 @@ let s:activeRegister = ''
 let s:promptForReplaceText = 0
 let s:useAbolish = 0
 let s:completeWord = 0
+let s:confirmReplace = 0
 
 function! s:ClearHighlight()
     augroup SubversiveClearHighlight
@@ -62,13 +63,14 @@ function! s:UpdateHighlight(searchText, startLine, endLine, startCol, endCol, ca
     let w:patternHighlightId = matchadd('Search', searchQuery, 2, get(w:, 'patternHighlightId', -1))
 endfunction
 
-function! subversive#doubleMotion#preSubstitute(register, promptForReplaceText, useAbolish, completeWord)
+function! subversive#doubleMotion#preSubstitute(register, promptForReplaceText, useAbolish, completeWord, confirmReplace)
     let s:startCursorPos = getpos('.')
     let s:startWinView = winsaveview()
     let s:activeRegister = a:register
     let s:promptForReplaceText = a:promptForReplaceText
     let s:useAbolish = a:useAbolish
     let s:completeWord = a:completeWord
+    let s:confirmReplace = a:confirmReplace
 endfunction
 
 function! subversive#doubleMotion#selectTextMotion(type, ...)
@@ -166,11 +168,22 @@ function! subversive#doubleMotion#selectRangeMotion(type)
         let commandStr .= 'g'
     endif
 
+    let didConfirm = 0
+
     if !s:useAbolish
         let commandStr .= 'I'
+
+        if s:confirmReplace
+            let commandStr .= 'c'
+            let didConfirm = 1
+        endif
     endif
 
     exec commandStr
-    call s:RestoreStartCursorPosition()
+
+    " Leave cursor wherever it finished if confirming each replace
+    if !didConfirm
+        call s:RestoreStartCursorPosition()
+    endif
 endfunction
 

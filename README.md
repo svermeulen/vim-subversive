@@ -69,6 +69,18 @@ nmap <leader>ss <plug>(SubversiveSubstituteWordRangeNoPrompt)
 
 Which will work identically to the previous plugs except instead of prompting it will use the default register.
 
+### Confirming Each Substitution
+
+For many substitutions, you can rely on the highlight preview to understand what is being replaced. But if you are doing a larger replacement across the entire file you might want to confirm each one.  You can do this with the following maps:
+
+```viml
+nmap <space>cr <plug>(SubversiveSubstituteRangeConfirm)
+xmap <space>cr <plug>(SubversiveSubstituteRangeConfirm)
+nmap <space>crr <plug>(SubversiveSubstituteWordRangeConfirm)
+```
+
+These work the same as the `<space>r` maps above except will step through each replacement one by one.
+
 ## Integration with abolish.vim
 
 If you have also installed [vim-abolish](https://github.com/tpope/vim-abolish), then you might consider adding something similar to the following mapping as well:
