@@ -67,7 +67,7 @@ xmap <leader><leader>s <plug>(SubversiveSubvertRange)
 
 Here we can think of sc as 'Substitute Case-insensitive'.  This will behave the same as `<leader>s` except that it will perform an abolish 'subvert' instead of using vim's built in substitution command.  This will apply the substitution and preserve whatever case the original word has.  For example:
 
-![Abolish Example](https://i.imgur.com/qMfYjBD.gifv)
+![Abolish Example](https://i.imgur.com/qMfYjBD.gif)
 
 In this case, we move the cursor overtop `foo` and then execute `<leader><leader>seie` then enter `bar`, which replaces all instances of `foo` regardless of case.
 
