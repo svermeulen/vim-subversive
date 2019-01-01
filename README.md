@@ -9,7 +9,7 @@ Example config:
 
 ```viml
 " s for substitute
-nmap s <plug>(SubversiveSubstituteMotion)
+nmap s <plug>(SubversiveSubstitute)
 nmap ss <plug>(SubversiveSubstituteLine)
 nmap S <plug>(SubversiveSubstituteToEndOfLine)
 ```
@@ -25,8 +25,8 @@ Another interesting operator provided by subversive allows specifying both the t
 Example config:
 
 ```viml
-nmap <leader>s <plug>(SubversiveSubstituteOverRangeMotion)
-xmap <leader>s <plug>(SubversiveSubstituteOverRangeMotion)
+nmap <leader>s <plug>(SubversiveSubstituteRange)
+xmap <leader>s <plug>(SubversiveSubstituteRange)
 ```
 
 After adding this map, if we execute `<leader>s<motion1><motion2>`, then enter some text into a prompt in the status bar, then the text given by `motion1` should be replaced by the text we entered for each line provided by `motion2`.  Alternatively, we can also select `motion1` in visual mode and then hit `<leader>s<motion2>` for the same effect.
@@ -47,8 +47,8 @@ You can also avoid the prompt by explicitly providing a register to use to pull 
 If instead you want to always use registers and never prompt, you can do that too by using the NoPrompt plug variants:
 
 ```viml
-nmap <leader>s <plug>(SubversiveSubstituteOverRangeMotionNoPrompt)
-xmap <leader>s <plug>(SubversiveSubstituteOverRangeMotionNoPrompt)
+nmap <leader>s <plug>(SubversiveSubstituteRangeNoPrompt)
+xmap <leader>s <plug>(SubversiveSubstituteRangeNoPrompt)
 ```
 
 In this case, it will always use the default register instead of prompting when an explicit register is not given.
@@ -56,7 +56,7 @@ In this case, it will always use the default register instead of prompting when 
 You might also consider adding a shortcut for the current word under the cursor if it is a common operation. For example:
 
 ```viml
-nmap <leader>ss <plug>(SubversiveSubstituteOverRangeMotion)iw
+nmap <leader>ss <plug>(SubversiveSubstituteRange)iw
 ```
 
 This will allow you to just execute `<leader>ssip` rather than `<leader>siwip`
@@ -68,8 +68,8 @@ Note that to really take advantage of the substitute over range motion, it is he
 If you have also installed [vim-abolish](https://github.com/tpope/vim-abolish), then you might consider adding something similar to the following mapping as well:
 
 ```viml
-nmap <leader>sc <plug>(SubversiveSubvertOverRangeMotion)
-xmap <leader>sc <plug>(SubversiveSubvertOverRangeMotion)
+nmap <leader>sc <plug>(SubversiveSubvertRange)
+xmap <leader>sc <plug>(SubversiveSubvertRange)
 ```
 
 Here we can think of sc as 'Substitute Case-insensitive'.  This will behave the same as `<leader>s` except that it will perform an abolish 'subvert' instead of using vim's built in substitution command.  This will apply the substitution and preserve whatever case the original word has.  For example, given the following text:
@@ -119,8 +119,8 @@ This can be a very convenient way to perform quick renames.
 Note that there is also a NoPrompt variation of this plug as well if you prefer that:
 
 ```viml
-nmap <leader>sc <plug>(SubversiveSubvertOverRangeMotionNoPrompt)
-xmap <leader>sc <plug>(SubversiveSubvertOverRangeMotionNoPrompt)
+nmap <leader>sc <plug>(SubversiveSubvertRangeNoPrompt)
+xmap <leader>sc <plug>(SubversiveSubvertRangeNoPrompt)
 ```
 
 ### Integration with yoink
@@ -130,9 +130,9 @@ Note that if you install [vim-yoink](https://github.com/svermeulen/vim-yoink) al
 Subversive also provides a plug to replace visual mode paste to provide post past swapping as well:
 
 ```viml
-xmap s <plug>(SubversiveSubstituteMotion)
-xmap p <plug>(SubversiveSubstituteMotion)
-xmap P <plug>(SubversiveSubstituteMotion)
+xmap s <plug>(SubversiveSubstitute)
+xmap p <plug>(SubversiveSubstitute)
+xmap P <plug>(SubversiveSubstitute)
 ```
 
 Now if you hit `p` while in visual mode you can swap between yanks just like when pasting in normal mode.
