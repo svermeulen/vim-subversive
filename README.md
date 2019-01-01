@@ -59,7 +59,7 @@ xmap <leader>s <plug>(SubversiveSubstituteOverRangeMotionNoPrompt)
 
 In this case, it will always use the default register instead of prompting when an explicit register is not given.
 
-## Integration With [vim-abolish](https://github.com/tpope/vim-abolish)
+## Integration With abolish.vim
 
 If you have also installed [vim-abolish](https://github.com/tpope/vim-abolish), then you might consider adding something similar to the following mapping as well:
 
