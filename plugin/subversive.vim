@@ -21,20 +21,25 @@ nnoremap <silent> <plug>(SubversiveSubstituteLine) :<c-u>call subversive#singleM
 nnoremap <silent> <plug>(SubversiveSubstituteRange) :<c-u>call subversive#doubleMotion#preSubstitute(v:register, 1, 0, 0)<cr>:set opfunc=subversive#doubleMotion#selectTextMotion<cr>g@
 xnoremap <silent> <plug>(SubversiveSubstituteRange) :<c-u>call subversive#doubleMotion#preSubstitute(v:register, 1, 0, 0)<cr><esc>:call subversive#doubleMotion#selectTextMotion('char', 1)<cr>
 
+nnoremap <silent> <plug>(SubversiveSubstituteWordRange) :<c-u>call subversive#doubleMotion#preSubstitute(v:register, 1, 0, 1)<cr>:set opfunc=subversive#doubleMotion#selectTextMotion<cr>g@iw
+
+" -- NoPrompt variants
 nnoremap <silent> <plug>(SubversiveSubstituteRangeNoPrompt) :<c-u>call subversive#doubleMotion#preSubstitute(v:register, 0, 0, 0)<cr>:set opfunc=subversive#doubleMotion#selectTextMotion<cr>g@
 xnoremap <silent> <plug>(SubversiveSubstituteRangeNoPrompt) :<c-u>call subversive#doubleMotion#preSubstitute(v:register, 0, 0, 0)<cr><esc>:call subversive#doubleMotion#selectTextMotion('char', 1)<cr>
 
-nnoremap <silent> <plug>(SubversiveSubstituteWordRange) :<c-u>call subversive#doubleMotion#preSubstitute(v:register, 1, 0, 1)<cr>:set opfunc=subversive#doubleMotion#selectTextMotion<cr>g@iw
 nnoremap <silent> <plug>(SubversiveSubstituteWordRangeNoPrompt) :<c-u>call subversive#doubleMotion#preSubstitute(v:register, 0, 0, 1)<cr>:set opfunc=subversive#doubleMotion#selectTextMotion<cr>g@iw
 
 " Abolish integration
 nnoremap <silent> <plug>(SubversiveSubvertRange) :<c-u>call subversive#doubleMotion#preSubstitute(v:register, 1, 1, 0)<cr>:set opfunc=subversive#doubleMotion#selectTextMotion<cr>g@
 xnoremap <silent> <plug>(SubversiveSubvertRange) :<c-u>call subversive#doubleMotion#preSubstitute(v:register, 1, 1, 0)<cr><esc>:call subversive#doubleMotion#selectTextMotion('char', 1)<cr>
 
+nnoremap <silent> <plug>(SubversiveSubvertWordRange) :<c-u>call subversive#doubleMotion#preSubstitute(v:register, 1, 1, 1)<cr>:set opfunc=subversive#doubleMotion#selectTextMotion<cr>g@iw
+
+" -- NoPrompt variants
+
 nnoremap <silent> <plug>(SubversiveSubvertRangeNoPrompt) :<c-u>call subversive#doubleMotion#preSubstitute(v:register, 0, 1, 0)<cr>:set opfunc=subversive#doubleMotion#selectTextMotion<cr>g@
 xnoremap <silent> <plug>(SubversiveSubvertRangeNoPrompt) :<c-u>call subversive#doubleMotion#preSubstitute(v:register, 0, 1, 0)<cr><esc>:call subversive#doubleMotion#selectTextMotion('char', 1)<cr>
 
-nnoremap <silent> <plug>(SubversiveSubvertWordRange) :<c-u>call subversive#doubleMotion#preSubstitute(v:register, 1, 1, 1)<cr>:set opfunc=subversive#doubleMotion#selectTextMotion<cr>g@iw
 nnoremap <silent> <plug>(SubversiveSubvertWordRangeNoPrompt) :<c-u>call subversive#doubleMotion#preSubstitute(v:register, 0, 1, 1)<cr>:set opfunc=subversive#doubleMotion#selectTextMotion<cr>g@iw
 
 " For internal use only

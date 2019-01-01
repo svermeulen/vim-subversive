@@ -44,32 +44,25 @@ And then execute `<leader>siwie` to replace all instances of the current word un
 
 You can also avoid the prompt by explicitly providing a register to use to pull the replacement text from.  For example, `"a<leader>siwip` will immediately replace all instances of the current word under the cursor with the contents of register `a` that exist within the current paragraph.
 
-If instead you want to always use registers and never prompt, you can do that too by using the NoPrompt plug variants:
+You might also consider adding a shortcut for the current word under the cursor:
 
 ```viml
-nmap <leader>s <plug>(SubversiveSubstituteRangeNoPrompt)
-xmap <leader>s <plug>(SubversiveSubstituteRangeNoPrompt)
+nmap <space>ss <plug>(SubversiveSubvertWordRange)
 ```
 
-In this case, it will always use the default register instead of prompting when an explicit register is not given.
-
-You might also consider adding a shortcut for the current word under the cursor if it is a common operation. For example:
-
-```viml
-nmap <leader>ss <plug>(SubversiveSubstituteRange)iw
-```
-
-This will allow you to just execute `<leader>ssip` rather than `<leader>siwip`
+This will allow you to just execute `<leader>ssip` to replace the word under cursor in the current paragraph.  Note that this matches **complete** words so is be different from `<leader>siwip`.  Given `foo` underneath the cursor, the latter would replace the foo in `foobar` but the former would not (because there isn't a word boundary)
 
 Note that to really take advantage of the substitute over range motion, it is helpful to add custom text objects in addition to just the vim built-in ones like current paragraph (`ip`), current sentence (`is`), or current line (`_`).  Custom text objects such as current indent level, current method, current class, entire buffer, current scroll page, etc. can all help a lot here.
+
+Some people find that they prefer to avoid the prompt entirely in favour of just always using the default register instead (unless an explicit register is provided).  The plugs `<plug>(SubversiveSubvertWordRangeNoPrompt)` and `<plug>(SubversiveSubstituteRangeNoPrompt)` can be used instead of the above ones if this is your preference.
 
 ## Integration With abolish.vim
 
 If you have also installed [vim-abolish](https://github.com/tpope/vim-abolish), then you might consider adding something similar to the following mapping as well:
 
 ```viml
-nmap <leader>sc <plug>(SubversiveSubvertRange)
-xmap <leader>sc <plug>(SubversiveSubvertRange)
+nmap <leader><leader>s <plug>(SubversiveSubvertRange)
+xmap <leader><leader>s <plug>(SubversiveSubvertRange)
 ```
 
 Here we can think of sc as 'Substitute Case-insensitive'.  This will behave the same as `<leader>s` except that it will perform an abolish 'subvert' instead of using vim's built in substitution command.  This will apply the substitution and preserve whatever case the original word has.  For example, given the following text:
@@ -116,12 +109,13 @@ class BarManager
 
 This can be a very convenient way to perform quick renames.
 
-Note that there is also a NoPrompt variation of this plug as well if you prefer that:
+Note that similar to the normal substitute plug there is one that matches complete words as well, which you might bind like this:
 
 ```viml
-nmap <leader>sc <plug>(SubversiveSubvertRangeNoPrompt)
-xmap <leader>sc <plug>(SubversiveSubvertRangeNoPrompt)
+nmap <leader><leader>ss <plug>(SubversiveSubvertWordRange)
 ```
+
+Note that there are also 'NoPrompt' variations of this plug as well if you prefer that: `<plug>(SubversiveSubvertRangeNoPrompt)` and `<plug>(SubversiveSubvertWordRangeNoPrompt)`
 
 ### Integration with yoink
 
