@@ -1,7 +1,7 @@
 
 # Subversive
 
-Subversive provides two new operator motions to make quick substitutions very easy.  It contains no default mappings and will have no affect until you add your own maps to it.
+Subversive provides two new operator motions to make it very easy to perform quick substitutions.  It contains no default mappings and will have no affect until you add your own maps to it.
 
 ## Substitution Motion
 
@@ -14,7 +14,7 @@ nmap ss <plug>(SubversiveSubstituteLine)
 nmap S <plug>(SubversiveSubstituteToEndOfLine)
 ```
 
-Note that in this case you will be shadowing the change character key `s` so you would have to use the longer form `cl`
+Note that in this case you will be shadowing the change character key `s` so you will have to use the longer form `cl`
 
 After adding these maps, you can then execute `s<motion>` to substitute the text object provided by the motion with the contents of the default register (or an explicit register if provided)
 
@@ -50,7 +50,7 @@ You might also consider adding a shortcut for the current word under the cursor:
 nmap <space>ss <plug>(SubversiveSubvertWordRange)
 ```
 
-This will allow you to just execute `<leader>ssip` to replace the word under cursor in the current paragraph.  Note that this matches **complete** words so is be different from `<leader>siwip`.  Given `foo` underneath the cursor, the latter would replace the foo in `foobar` but the former would not (because there isn't a word boundary)
+This will allow you to just execute `<leader>ssip` to replace the word under cursor in the current paragraph.  Note that this matches **complete** words so is different from `<leader>siwip`.  Given `foo` underneath the cursor, the latter would replace the foo in `foobar` but the former would not (because there isn't a word boundary)
 
 Note that to really take advantage of the substitute over range motion, it is helpful to add custom text objects in addition to just the vim built-in ones like current paragraph (`ip`), current sentence (`is`), or current line (`_`).  Custom text objects such as current indent level, current method, current class, entire buffer, current scroll page, etc. can all help a lot here.
 
@@ -65,47 +65,11 @@ nmap <leader><leader>s <plug>(SubversiveSubvertRange)
 xmap <leader><leader>s <plug>(SubversiveSubvertRange)
 ```
 
-Here we can think of sc as 'Substitute Case-insensitive'.  This will behave the same as `<leader>s` except that it will perform an abolish 'subvert' instead of using vim's built in substitution command.  This will apply the substitution and preserve whatever case the original word has.  For example, given the following text:
+Here we can think of sc as 'Substitute Case-insensitive'.  This will behave the same as `<leader>s` except that it will perform an abolish 'subvert' instead of using vim's built in substitution command.  This will apply the substitution and preserve whatever case the original word has.  For example:
 
-```csharp
-class FooManager
-{
-    static int MAX_FOOS = 3;
+![Abolish Example](https://i.imgur.com/qMfYjBD.gifv)
 
-    List<^Foo> _foos = new List<Foo>();
-
-    public void AddFoo(Foo foo)
-    {
-        if (_foos.Count >= MAX_FOOS)
-        {
-            throw new Exception("Too many foos");
-        }
-
-        _foos.Add(foo);
-    }
-}
-```
-
-Assuming our cursor is at the `^` character, if we execute `<leader>sceie` (assuming we've also added the `ie` operator from above) then enter `Bar` then our file becomes:
-
-```csharp
-class BarManager
-{
-    static int MAX_BARS = 3;
-
-    List<^Bar> _bars = new List<Bar>();
-
-    public void AddBar(Bar bar)
-    {
-        if (_bars.Count >= MAX_BARS)
-        {
-            throw new Exception("Too many bars");
-        }
-
-        _bars.Add(bar);
-    }
-}
-```
+In this case, we move the cursor overtop `foo` and then execute `<leader><leader>seie` then enter `bar`, which replaces all instances of `foo` regardless of case.
 
 This can be a very convenient way to perform quick renames.
 
@@ -115,7 +79,7 @@ Note that similar to the normal substitute plug there is one that matches comple
 nmap <leader><leader>ss <plug>(SubversiveSubvertWordRange)
 ```
 
-Note that there are also 'NoPrompt' variations of this plug as well if you prefer that: `<plug>(SubversiveSubvertRangeNoPrompt)` and `<plug>(SubversiveSubvertWordRangeNoPrompt)`
+Note that there are also 'NoPrompt' variations of the subvert plugs as well if you prefer those: `<plug>(SubversiveSubvertRangeNoPrompt)` and `<plug>(SubversiveSubvertWordRangeNoPrompt)`
 
 ### Integration with yoink
 

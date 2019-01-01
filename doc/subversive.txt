@@ -51,7 +51,7 @@ In this case, it will always use the default register instead of prompting when 
 
 You might also consider adding a shortcut for the current word under the cursor if it is a common operation. For example:
 
-    nmap <leader>ss <plug>(SubversiveSubstituteRange)iw
+    nmap <leader>ss <plug>(SubversiveSubstituteWordRange)
 
 This will allow you to just execute `<leader>ssip` rather than `<leader>siwip`
 
