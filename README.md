@@ -81,6 +81,11 @@ nmap <space>crr <plug>(SubversiveSubstituteWordRangeConfirm)
 
 These work the same as the `<space>r` maps above except will step through each replacement one by one.
 
+## Settings
+
+* `g:subversivePromptWithCurrent` - When set to `1`, the prompt will include the text that is being replaced.  This can be useful if you want to just make an edit to it.  Default: `0`
+* `g:subversiveCurrentTextRegister` - When set, the given register will be populated with the text that is being replaced.  This can be useful as an alternative to g:subversivePromptWithCurrent, so that you can hit `<c-r>r` in the prompt if you want to edit it or just directly type if you want to do a full replace.
+
 ## Integration with abolish.vim
 
 If you have also installed [vim-abolish](https://github.com/tpope/vim-abolish), then you might consider adding something similar to the following mapping as well:

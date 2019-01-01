@@ -1,5 +1,9 @@
+g:subversiveCurrentTextRegister	subversive.txt	/*g:subversiveCurrentTextRegister*
+g:subversivePromptWithCurrent	subversive.txt	/*g:subversivePromptWithCurrent*
 subversive	subversive.txt	/*subversive*
 subversive-abolish-integration	subversive.txt	/*subversive-abolish-integration*
+subversive-confirming	subversive.txt	/*subversive-confirming*
+subversive-settings	subversive.txt	/*subversive-settings*
 subversive-substitute-motion	subversive.txt	/*subversive-substitute-motion*
 subversive-substitute-over-range-motion	subversive.txt	/*subversive-substitute-over-range-motion*
 subversive-yoink-integration	subversive.txt	/*subversive-yoink-integration*

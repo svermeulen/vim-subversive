@@ -1,4 +1,7 @@
 
+let g:subversivePromptWithCurrent = get(g:, 'subversivePromptWithCurrent', 0)
+let g:subversiveCurrentTextRegister = get(g:, 'subversiveCurrentTextRegister', '')
+
 let s:searchText = ''
 let s:startCursorPos = []
 let s:startWinView = {}
@@ -127,7 +130,11 @@ function! subversive#doubleMotion#selectRangeMotion(type)
         " This is necessary to render highlight before the prompt
         redraw
 
-        let replaceText = input('Substitute With: ')
+        if g:subversiveCurrentTextRegister != ''
+            call setreg(g:subversiveCurrentTextRegister, s:searchText)
+        endif
+
+        let replaceText = input('Substitute With: ', (g:subversivePromptWithCurrent ? s:searchText : ''))
 
         if empty(replaceText)
             " Cancelled
