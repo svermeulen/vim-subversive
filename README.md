@@ -29,7 +29,7 @@ nmap <leader>s <plug>(SubversiveSubstituteOverRangeMotion)
 xmap <leader>s <plug>(SubversiveSubstituteOverRangeMotion)
 ```
 
-After adding this map, if we execute `<leader>s<motion1><motion2>`, then we should get a prompt in the status bar that says `Substitute With:`.  After entering some text, then the text given by `motion1` should be replaced by the text we entered for each line provided by `motion2`.  Alternatively, we can also select `motion1` in visual mode and then hit `<leader>s<motion2>` for the same effect.
+After adding this map, if we execute `<leader>s<motion1><motion2>`, then enter some text into a prompt in the status bar, then the text given by `motion1` should be replaced by the text we entered for each line provided by `motion2`.  Alternatively, we can also select `motion1` in visual mode and then hit `<leader>s<motion2>` for the same effect.
 
 This can be very powerful. For example, you could execute `<leader>siwip` to replace all instances of the current word under the cursor that exist within the paragraph under the cursor.  Or `<leader>sl_` to replace all instances of the character under the cursor on the current line.
 
@@ -52,6 +52,14 @@ xmap <leader>s <plug>(SubversiveSubstituteOverRangeMotionNoPrompt)
 ```
 
 In this case, it will always use the default register instead of prompting when an explicit register is not given.
+
+You might also consider adding a shortcut for the current word under the cursor, if it is a common operation. For example:
+
+```viml
+nmap <leader>ss <plug>(SubversiveSubstituteOverRangeMotion)iw
+```
+
+This will allow us to just execute `<leader>ssip` rather than `<leader>siwip`
 
 ## Integration With abolish.vim
 
