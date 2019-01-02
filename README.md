@@ -1,5 +1,5 @@
 
-# Subversive
+# Subversive.vim
 
 Subversive provides two new operator motions to make it very easy to perform quick substitutions.  It contains no default mappings and will have no effect until you add your own maps to it.
 
@@ -83,12 +83,12 @@ Which will work identically to the previous plugs except instead of prompting it
 For many substitutions, you can rely on the highlight preview to understand what is being replaced. But if you are doing a larger replacement across the entire file you might want to confirm each one.  You can do this with the following maps:
 
 ```viml
-nmap <space>cr <plug>(SubversiveSubstituteRangeConfirm)
-xmap <space>cr <plug>(SubversiveSubstituteRangeConfirm)
-nmap <space>crr <plug>(SubversiveSubstituteWordRangeConfirm)
+nmap <leader>cr <plug>(SubversiveSubstituteRangeConfirm)
+xmap <leader>cr <plug>(SubversiveSubstituteRangeConfirm)
+nmap <leader>crr <plug>(SubversiveSubstituteWordRangeConfirm)
 ```
 
-These work the same as the `<space>r` maps above except will step through each replacement one by one.
+These work the same as the `<leader>r` maps above except will step through each replacement one by one.
 
 ## Settings
 
