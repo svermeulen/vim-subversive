@@ -43,16 +43,25 @@ Let's see it in action:
 
 In this gif, we first rename the local `foo` parameter by executing `<leader>ssom` then entering `bar` in the prompt (note that `om` is a custom motion that stands for 'outer c# method' and is not provided by this plugin).  Also note that because we are using `<leader>ss`, the text `_foos` is unaffected because it does not match the complete word.  It is useful in this case because we only want to rename the parameter within the function.
 
-After that we switch to visual mode and select the `foo` part `_foos` then execute `<leader>sie` and once again enter `bar` into the prompt.  `ie` is again a custom motion that stands for `entire buffer` and is simply mapped as follows:
+After that we switch to visual mode and select the `foo` part `_foos` then execute `<leader>sie` and once again enter `bar` into the prompt.  `ie` is again a custom motion that stands for `entire buffer` (see next section for details)
+
+After that we move to the `Foo` part of `AddFoo` and execute `<leader>seie` and once again enter `Bar`.  Then finally do the same for the fully capitalized `FOOS`.
+
+### Custom Text Objects
+
+Note that to really take advantage of these mappings, it is helpful to add custom text objects in addition to just the built-in ones like current paragraph (`ip`), current sentence (`is`), or current line (`_`).  Custom text objects such as current indent level, current method, current class, entire buffer, current scroll page, etc. can all help a lot here.
+
+For example, a couple really simple motions that are useful for subversive are:
 
 ```viml
 " ie = inner entire buffer
 onoremap ie :exec "normal! ggVG"<cr>
+
+" iv = current viewable text in the buffer
+onoremap iv :exec "normal! HVL"<cr>
 ```
 
-After that we move to the `Foo` part of `AddFoo` and execute `<leader>seie` and once again enter `Bar`.  Then finally do the same for the fully capitalized `FOOS`.
-
-Note that to really take advantage of these mappings, it is helpful to add custom text objects in addition to just the built-in ones like current paragraph (`ip`), current sentence (`is`), or current line (`_`).  Custom text objects such as current indent level, current method, current class, entire buffer, current scroll page, etc. can all help a lot here.
+There are also other plugins that provide lots of custom text objects that I would recommend taking a look at.
 
 ### What if I don't want to use the prompt and want to directly replace with a register value?
 
