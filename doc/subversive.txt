@@ -18,7 +18,7 @@ Example config:
 
 Note that in this case you will be shadowing the change character key 's' so you will have to use the longer form 'cl'
 
-After adding these maps, you can then execute 's<motion>' to substitute the text object provided by the motion with the contents of the default register (or an explicit register if provided)
+After adding these maps, you can then execute 's<motion>' to substitute the text object provided by the motion with the contents of the default register (or an explicit register if provided).  For example, you could execute `siw` to replace the current word under the cursor with the current yank, or `sip` to replace the paragraph, etc.
 
 SUBSTITUTE OVER RANGE MOTION					*subversive-substitute-over-range-motion*
 
@@ -41,14 +41,21 @@ See here for an example: https://i.imgur.com/0qh2sOU.gif
 
 In this gif, we first rename the local 'foo' parameter by executing '<leader>ssom' then entering 'bar' in the prompt (note that 'om' is a custom motion that stands for 'outer c# method' and is not provided by this plugin).  Also note that because we are using '<leader>ss', the text '_foos' is unaffected because it does not match the complete word.  It is useful in this case because we only want to rename the parameter within the function.
 
-After that we switch to visual mode and select the 'foo' part '_foos' then execute '<leader>sie' and once again enter 'bar' into the prompt.  'ie' is again a custom motion that stands for 'entire buffer' and is simply mapped as follows:
+After that we switch to visual mode and select the 'foo' part '_foos' then execute '<leader>sie' and once again enter 'bar' into the prompt.  `ie` is again a custom motion that stands for `entire buffer` (see next section for details)
+
+After that we move to the 'Foo' part of 'AddFoo' and execute '<leader>seie' and once again enter 'Bar'.  Then finally do the same for the fully capitalized 'FOOS'.
+
+CUSTOM TEXT OBJECTS
+
+Note that to really take advantage of these mappings, it is helpful to add custom text objects in addition to just the built-in ones like current paragraph ('ip'), current sentence ('is'), or current line ('_').  Custom text objects such as current indent level, current method, current class, entire buffer, current scroll page, etc. can all help a lot here.
+
+For example, a couple really simple motions that are useful for subversive are:
 
     " ie = inner entire buffer
     onoremap ie :exec "normal! ggVG"<cr>
 
-After that we move to the 'Foo' part of 'AddFoo' and execute '<leader>seie' and once again enter 'Bar'.  Then finally do the same for the fully capitalized 'FOOS'.
-
-Note that to really take advantage of these mappings, it is helpful to add custom text objects in addition to just the built-in ones like current paragraph ('ip'), current sentence ('is'), or current line ('_').  Custom text objects such as current indent level, current method, current class, entire buffer, current scroll page, etc. can all help a lot here.
+    " iv = current viewable text in the buffer
+    onoremap iv :exec "normal! HVL"<cr>
 
 "What if I don't want to use the prompt and want to directly replace with a register value?"
 

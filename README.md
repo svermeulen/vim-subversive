@@ -16,7 +16,7 @@ nmap S <plug>(SubversiveSubstituteToEndOfLine)
 
 Note that in this case you will be shadowing the change character key `s` so you will have to use the longer form `cl`
 
-After adding these maps, you can then execute `s<motion>` to substitute the text object provided by the motion with the contents of the default register (or an explicit register if provided)
+After adding these maps, you can then execute `s<motion>` to substitute the text object provided by the motion with the contents of the default register (or an explicit register if provided).  For example, you could execute `siw` to replace the current word under the cursor with the current yank, or `sip` to replace the paragraph, etc.
 
 ## Substitute Over Range Motion
 
