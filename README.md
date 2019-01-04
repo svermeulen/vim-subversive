@@ -63,21 +63,6 @@ onoremap iv :exec "normal! HVL"<cr>
 
 There are also other plugins that provide lots of custom text objects that I would recommend taking a look at.
 
-### What if I don't want to use the prompt and want to directly replace with a register value?
-
-If you provide an explicit register to any of the substitute motions above it will not prompt and instead will use the contents of the given register.  For example, `"a<leader>siwip` will immediately replace all instances of the current word under the cursor with the contents of register `a` that exist within the current paragraph.
-
-If this isn't enough, you can also use the following plugs instead:
-
-```viml
-nmap <leader>s <plug>(SubversiveSubstituteRangeNoPrompt)
-xmap <leader>s <plug>(SubversiveSubstituteRangeNoPrompt)
-
-nmap <leader>ss <plug>(SubversiveSubstituteWordRangeNoPrompt)
-```
-
-Which will work identically to the previous plugs except instead of prompting it will use the default register.
-
 ### Confirming Each Substitution
 
 For many substitutions, you can rely on the highlight preview to understand what is being replaced. But if you are doing a larger replacement across the entire file you might want to confirm each one.  You can do this with the following maps:
@@ -89,6 +74,29 @@ nmap <leader>crr <plug>(SubversiveSubstituteWordRangeConfirm)
 ```
 
 These work the same as the `<leader>r` maps above except will step through each replacement one by one.
+
+## Questions
+
+* #### What if I don't want to use the prompt and want to directly replace with a register value?
+
+    If you provide an explicit register to any of the substitute motions above it will not prompt and instead will use the contents of the given register.  For example, `"a<leader>siwip` will immediately replace all instances of the current word under the cursor with the contents of register `a` that exist within the current paragraph.
+
+    If this isn't enough, you can also use the following plugs instead:
+
+    ```viml
+    nmap <leader>s <plug>(SubversiveSubstituteRangeNoPrompt)
+    xmap <leader>s <plug>(SubversiveSubstituteRangeNoPrompt)
+
+    nmap <leader>ss <plug>(SubversiveSubstituteWordRangeNoPrompt)
+    ```
+
+    Which will work identically to the previous plugs except instead of prompting it will use the default register.
+
+* #### What if I just want to delete instead of replace?
+
+    You can do this by passing the black hole register to one of the substitute over range commands. For example: `"_<leader>siwip` or `"_<leader>csiwip` if you want to confirm each delete.
+
+    Unfortunately you cannot just input an empty value into the prompt because there isn't a way to distinguish this input from cancelling via escape
 
 ## Settings
 
