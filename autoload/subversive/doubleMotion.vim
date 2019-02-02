@@ -97,7 +97,7 @@ function! subversive#doubleMotion#selectTextMotion(type, ...)
 
     call s:UpdateHighlight(s:searchText, start[1], start[1], start[2], end[2], 1, s:completeWord)
 
-    call feedkeys("\<plug>(_SubversiveSubstituteRangeSecondary)", "m")
+    call feedkeys("\<plug>(_SubversiveSubstituteRangeSecondary)", "mi")
 endfunction
 
 function! s:RestoreStartCursorPosition()
