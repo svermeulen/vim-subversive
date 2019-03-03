@@ -1,6 +1,7 @@
 
 let g:subversivePromptWithCurrent = get(g:, 'subversivePromptWithCurrent', 0)
 let g:subversiveCurrentTextRegister = get(g:, 'subversiveCurrentTextRegister', '')
+let g:subversivePromptWithActualCommand = get(g:, 'subversivePromptWithActualCommand', 0)
 
 let s:searchText = ''
 let s:startCursorPos = []
@@ -121,6 +122,44 @@ function! subversive#doubleMotion#selectRangeMotion(type)
     let startLine = line("'[")
     let endLine = line("']")
 
+    let commandPrefix = startLine . ',' . endLine
+
+    if s:useAbolish
+        let commandPrefix .= 'S/'
+    else
+        let commandPrefix .= 's/\V\C'
+    endif
+
+    let escapedSearchText = escape(s:searchText, '/\')
+
+    if s:completeWord && !s:useAbolish
+        let commandPrefix .= '\<' . escapedSearchText . '\>'
+    else
+        let commandPrefix .= escapedSearchText
+    endif
+
+    let commandPrefix .= '/'
+    let commandSuffix = '/'
+
+    if s:completeWord && s:useAbolish
+        let commandSuffix .= 'w'
+    endif
+
+    if !&gdefault
+        let commandSuffix .= 'g'
+    endif
+
+    let didConfirm = 0
+
+    if !s:useAbolish
+        let commandSuffix .= 'I'
+
+        if s:confirmReplace
+            let commandSuffix .= 'c'
+            let didConfirm = 1
+        endif
+    endif
+
     if s:activeRegister == s:getDefaultReg() && s:promptForReplaceText
         call s:UpdateHighlight(s:searchText, startLine, endLine, -1, -1, !s:useAbolish, s:completeWord)
 
@@ -134,11 +173,29 @@ function! subversive#doubleMotion#selectRangeMotion(type)
             call setreg(g:subversiveCurrentTextRegister, s:searchText)
         endif
 
-        let replaceText = input('Substitute With: ', (g:subversivePromptWithCurrent ? s:searchText : ''))
+        " If they have inccommand set in neovim then always prompt with actual command
+        " so they can get the instant feedback
+        if g:subversivePromptWithActualCommand || (!s:useAbolish && exists("&inccommand") && &inccommand !=# '')
+            let fullCommand = ":" . commandPrefix . commandSuffix
 
-        if empty(replaceText)
-            " Cancelled
-            return ''
+            for i in range(len(commandSuffix))
+                let fullCommand .= "\<left>"
+            endfor
+
+            if g:subversivePromptWithCurrent
+                let fullCommand .= escape(s:searchText, '/\')
+            endif
+
+            call feedkeys(fullCommand, "t")
+        else
+            let replaceText = input('Substitute With: ', (g:subversivePromptWithCurrent ? s:searchText : ''))
+
+            if empty(replaceText)
+                " Cancelled
+                return ''
+            endif
+
+            exec commandPrefix . escape(replaceText, '/\') . commandSuffix
         endif
     else
         let replaceText = getreg(s:activeRegister)
@@ -147,46 +204,9 @@ function! subversive#doubleMotion#selectRangeMotion(type)
             echo "Substitution cancelled - Multiline is not supported by subversive substitute over area motion"
             return
         endif
+
+        exec commandPrefix . escape(replaceText, '/\') . commandSuffix
     endif
-
-    let commandStr = startLine . ',' . endLine
-
-    if s:useAbolish
-        let commandStr .= 'S/'
-    else
-        let commandStr .= 's/\V\C'
-    endif
-
-    let escapedSearchText = escape(s:searchText, '/\')
-
-    if s:completeWord && !s:useAbolish
-        let commandStr .= '\<' . escapedSearchText . '\>'
-    else
-        let commandStr .= escapedSearchText
-    endif
-
-    let commandStr .= '/'. escape(replaceText, '/\') .'/'
-
-    if s:completeWord && s:useAbolish
-        let commandStr .= 'w'
-    endif
-
-    if !&gdefault
-        let commandStr .= 'g'
-    endif
-
-    let didConfirm = 0
-
-    if !s:useAbolish
-        let commandStr .= 'I'
-
-        if s:confirmReplace
-            let commandStr .= 'c'
-            let didConfirm = 1
-        endif
-    endif
-
-    exec commandStr
 
     " Leave cursor wherever it finished if confirming each replace
     if !didConfirm
