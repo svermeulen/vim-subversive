@@ -47,6 +47,8 @@ After that we switch to visual mode and select the `foo` part `_foos` then execu
 
 After that we move to the `Foo` part of `AddFoo` and execute `<leader>seie` and once again enter `Bar`.  Then finally do the same for the fully capitalized `FOOS`.
 
+Note that if you are using neovim you can enable the `inccommand` option to get a real time preview of the replacement as you're typing it.
+
 ### Custom Text Objects
 
 Note that to really take advantage of these mappings, it is helpful to add custom text objects in addition to just the built-in ones like current paragraph (`ip`), current sentence (`is`), or current line (`_`).  Custom text objects such as current indent level, current method, current class, entire buffer, current scroll page, etc. can all help a lot here.
@@ -97,10 +99,6 @@ These work the same as the `<leader>r` maps above except will step through each 
     You can do this by passing the black hole register to one of the substitute over range commands. For example: `"_<leader>siwip` or `"_<leader>csiwip` if you want to confirm each delete.
 
     Unfortunately you cannot just input an empty value into the prompt because there isn't a way to distinguish this input from cancelling via escape
-
-* #### Is this compatible with Neovim's `inccommand` setting?
-
-    Yes.  When `inccommand` is set, subversive will prompt with the full native vim command so that the preview given by `inccommand` works as expected
 
 ## Settings
 
