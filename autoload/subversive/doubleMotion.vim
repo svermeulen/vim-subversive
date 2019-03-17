@@ -183,7 +183,7 @@ function! subversive#doubleMotion#selectRangeMotion(type)
                 let fullCommand .= escape(s:searchText, '/\')
             endif
 
-            call feedkeys(fullCommand, "t")
+            call feedkeys(fullCommand, "tn")
         else
             let replaceText = input('Substitute With: ', (g:subversivePromptWithCurrent ? s:searchText : ''))
 
