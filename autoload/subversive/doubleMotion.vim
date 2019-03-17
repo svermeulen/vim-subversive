@@ -122,7 +122,7 @@ function! subversive#doubleMotion#selectRangeMotion(type)
     let startLine = line("'[")
     let endLine = line("']")
 
-    let commandPrefix = startLine . ',' . endLine
+    let commandPrefix = '''[,'']'
 
     if s:useAbolish
         let commandPrefix .= 'S/'
@@ -195,7 +195,9 @@ function! subversive#doubleMotion#selectRangeMotion(type)
                 return ''
             endif
 
-            exec commandPrefix . escape(replaceText, '/\') . commandSuffix
+            let s:substituteCommand = commandPrefix . escape(replaceText, '/\') . commandSuffix
+            exec s:substituteCommand
+            let &operatorfunc = 'subversive#doubleMotion#repeatMotion'
         endif
     else
         let replaceText = getreg(s:activeRegister)
@@ -205,7 +207,9 @@ function! subversive#doubleMotion#selectRangeMotion(type)
             return
         endif
 
-        exec commandPrefix . escape(replaceText, '/\') . commandSuffix
+        let s:substituteCommand = commandPrefix . escape(replaceText, '/\') . commandSuffix
+        exec s:substituteCommand
+        let &operatorfunc = 'subversive#doubleMotion#repeatMotion'
     endif
 
     " Leave cursor wherever it finished if confirming each replace
@@ -214,3 +218,6 @@ function! subversive#doubleMotion#selectRangeMotion(type)
     endif
 endfunction
 
+function! subversive#doubleMotion#repeatMotion(type)
+    exec s:substituteCommand
+endfunction
