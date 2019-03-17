@@ -49,6 +49,8 @@ After that we move to the `Foo` part of `AddFoo` and execute `<leader>seie` and 
 
 Note that if you are using neovim you can enable the `inccommand` option to get a real time preview of the replacement as you're typing it (equivalent to setting `g:subversivePromptWithActualCommand` to `1`)
 
+Note also that this motion is repeatable.  If you run `<leader>siwip` in one paragraph, then go to a different paragraph, then hit `.` then the same substitution will apply to the new paragraph under the cursor.
+
 ### Custom Text Objects
 
 Note that to really take advantage of these mappings, it is helpful to add custom text objects in addition to just the built-in ones like current paragraph (`ip`), current sentence (`is`), or current line (`_`).  Custom text objects such as current indent level, current method, current class, entire buffer, current scroll page, etc. can all help a lot here.
