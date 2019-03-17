@@ -119,9 +119,6 @@ endfunction
 
 function! subversive#doubleMotion#selectRangeMotion(type)
 
-    let startLine = line("'[")
-    let endLine = line("']")
-
     let commandPrefix = '''[,'']'
 
     if s:useAbolish
@@ -161,7 +158,7 @@ function! subversive#doubleMotion#selectRangeMotion(type)
     endif
 
     if s:activeRegister == s:getDefaultReg() && s:promptForReplaceText
-        call s:UpdateHighlight(s:searchText, startLine, endLine, -1, -1, !s:useAbolish, s:completeWord)
+        call s:UpdateHighlight(s:searchText, line("'["), line("']"), -1, -1, !s:useAbolish, s:completeWord)
 
         " Need to do this here in addition to after the substitution because the second motion
         " can be large (ie the whole file)
