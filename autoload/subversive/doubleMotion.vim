@@ -29,7 +29,7 @@ function! s:AttachClearHighlightAutoCommands()
     augroup END
 endfunction
 
-function! s:UpdateHighlight(searchText, startLine, endLine, startCol, endCol, caseSensitive, completeWord)
+function! subversive#doubleMotion#UpdateHighlight(searchText, startLine, endLine, startCol, endCol, caseSensitive, completeWord)
     call s:ClearHighlight()
     call s:AttachClearHighlightAutoCommands()
 
@@ -68,6 +68,12 @@ function! s:UpdateHighlight(searchText, startLine, endLine, startCol, endCol, ca
     let w:patternHighlightId = matchadd('Search', searchQuery, 2, get(w:, 'patternHighlightId', -1))
 endfunction
 
+function! subversive#doubleMotion#getSubstituteCommand(searchText, replaceText, useAbolish, completeWord, confirmReplace)
+    call subversive#doubleMotion#preSubstitute('', 0, a:useAbolish, a:completeWord, a:confirmReplace)
+    let s:searchText = a:searchText
+    return s:getCommandPrefix() . a:replaceText . s:getCommandSuffix()
+endfunction
+
 function! subversive#doubleMotion#preSubstitute(register, promptForReplaceText, useAbolish, completeWord, confirmReplace)
     let s:startCursorPos = getpos('.')
     let s:startWinView = winsaveview()
@@ -97,7 +103,7 @@ function! subversive#doubleMotion#selectTextMotion(type, ...)
     let line = getline(start[1])
     let s:searchText = line[start[2]-1:end[2]-1]
 
-    call s:UpdateHighlight(s:searchText, start[1], start[1], start[2], end[2], 1, s:completeWord)
+    call subversive#doubleMotion#UpdateHighlight(s:searchText, start[1], start[1], start[2], end[2], 1, s:completeWord)
 
     call feedkeys("\<plug>(_SubversiveSubstituteRangeSecondary)", "mi")
 endfunction
@@ -118,9 +124,8 @@ function! s:getDefaultReg()
     endif
 endfunction
 
-function! subversive#doubleMotion#selectRangeMotion(type)
-
-    let commandPrefix = '''[,'']'
+function! s:getCommandPrefix()
+    let commandPrefix = ''
 
     if s:useAbolish
         let commandPrefix .= 'S/'
@@ -137,6 +142,11 @@ function! subversive#doubleMotion#selectRangeMotion(type)
     endif
 
     let commandPrefix .= '/'
+    return commandPrefix
+endfunction
+
+function! s:getCommandSuffix()
+
     let commandSuffix = '/'
 
     if s:completeWord && s:useAbolish
@@ -147,19 +157,25 @@ function! subversive#doubleMotion#selectRangeMotion(type)
         let commandSuffix .= 'g'
     endif
 
-    let didConfirm = 0
-
     if !s:useAbolish
         let commandSuffix .= 'I'
 
         if s:confirmReplace
             let commandSuffix .= 'c'
-            let didConfirm = 1
         endif
     endif
 
+    return commandSuffix
+endfunction
+
+function! subversive#doubleMotion#selectRangeMotion(type)
+
+    let linesRange = '''[,'']'
+    let commandPrefix = linesRange . s:getCommandPrefix()
+    let commandSuffix = s:getCommandSuffix()
+
     if s:activeRegister == s:getDefaultReg() && s:promptForReplaceText
-        call s:UpdateHighlight(s:searchText, line("'["), line("']"), -1, -1, !s:useAbolish, s:completeWord)
+        call subversive#doubleMotion#UpdateHighlight(s:searchText, line("'["), line("']"), -1, -1, !s:useAbolish, s:completeWord)
 
         " Need to do this here in addition to after the substitution because the second motion
         " can be large (ie the whole file)
@@ -206,6 +222,7 @@ function! subversive#doubleMotion#selectRangeMotion(type)
         call s:execRepeatableCommand(commandPrefix . escape(replaceText, '/\') . commandSuffix)
     endif
 
+    let didConfirm = !s:useAbolish && s:confirmReplace
     " Leave cursor wherever it finished if confirming each replace
     if !didConfirm && g:subversivePreserveCursorPosition
         call s:RestoreStartCursorPosition()
