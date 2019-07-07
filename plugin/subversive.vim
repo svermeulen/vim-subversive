@@ -21,6 +21,9 @@ nnoremap <silent> <plug>(SubversiveSubstituteLine) :<c-u>call subversive#singleM
 nnoremap <silent> <plug>(SubversiveSubstituteRange) :<c-u>call subversive#lineRangeMotion#preSubstitute(v:register, 1, 0, 0, 0)<cr>:set opfunc=subversive#lineRangeMotion#selectTextMotion<cr>g@
 xnoremap <silent> <plug>(SubversiveSubstituteRange) :<c-u>call subversive#lineRangeMotion#preSubstitute(v:register, 1, 0, 0, 0)<cr><esc>:call subversive#lineRangeMotion#selectTextMotion('char', 1)<cr>
 
+nnoremap <silent> <plug>(SubversiveSubstituteRangeDelete) :<c-u>call subversive#lineRangeMotion#preSubstitute("_", 1, 0, 0, 0)<cr>:set opfunc=subversive#lineRangeMotion#selectTextMotion<cr>g@
+xnoremap <silent> <plug>(SubversiveSubstituteRangeDelete) :<c-u>call subversive#lineRangeMotion#preSubstitute("_", 1, 0, 0, 0)<cr><esc>:call subversive#lineRangeMotion#selectTextMotion('char', 1)<cr>
+
 nnoremap <silent> <plug>(SubversiveSubstituteWordRange) :<c-u>call subversive#lineRangeMotion#preSubstitute(v:register, 1, 0, 1, 0)<cr>:set opfunc=subversive#lineRangeMotion#selectTextMotion<cr>g@iw
 
 " -- Confirm variants
