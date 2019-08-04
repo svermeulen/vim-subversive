@@ -2,6 +2,7 @@ pluginManagement {
   repositories {
     mavenLocal()
     maven {
+      name "ave"
       url aveMavenUrl
       credentials {
         username aveMavenUser
