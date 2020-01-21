@@ -77,7 +77,7 @@ xmap <leader>cr <plug>(SubversiveSubstituteRangeConfirm)
 nmap <leader>crr <plug>(SubversiveSubstituteWordRangeConfirm)
 ```
 
-These work the same as the `<leader>r` maps above except will step through each replacement one by one.
+These work the same as the `<leader>s` maps above except will step through each replacement one by one.
 
 ## Questions
 
