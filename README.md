@@ -77,7 +77,7 @@ xmap <leader>cr <plug>(SubversiveSubstituteRangeConfirm)
 nmap <leader>crr <plug>(SubversiveSubstituteWordRangeConfirm)
 ```
 
-These work the same as the `<leader>r` maps above except will step through each replacement one by one.
+These work the same as the `<leader>s` maps above except will step through each replacement one by one.
 
 ## Questions
 
@@ -98,7 +98,7 @@ These work the same as the `<leader>r` maps above except will step through each 
 
 * #### What if I just want to delete instead of replace?
 
-    You can do this by passing the black hole register to one of the substitute over range commands. For example: `"_<leader>siwip` or `"_<leader>csiwip` if you want to confirm each delete.
+    You can do this by passing the black hole register to one of the substitute over range commands. For example: `"_<leader>siwip` or `"_<leader>criwip` if you want to confirm each delete.
 
     Unfortunately you cannot just input an empty value into the prompt because there isn't a way to distinguish this input from cancelling via escape (unless you set `g:subversivePromptWithActualCommand` to `1` in which case that will work fine)
 
