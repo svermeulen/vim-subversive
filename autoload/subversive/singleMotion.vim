@@ -2,6 +2,7 @@
 let s:activeRegister = ''
 let s:savedStartPos = []
 let s:savedEndPos = []
+let s:visualMap = 0
 let s:visualMode = 0
 
 try
@@ -11,17 +12,22 @@ catch /\VUnknown function/
     let s:hasYoinkInstalled = 0
 endtry
 
-function! subversive#singleMotion#preSubstitute(register, visualMode)
+function! subversive#singleMotion#preSubstitute(register, visualMap, visualMode)
     let s:activeRegister = a:register
+    let s:visualMap = a:visualMap
     let s:visualMode = a:visualMode
 endfunction
 
 function! subversive#singleMotion#substituteMotion(type, ...)
 
-    let opMode = 'v'
-
-    if a:type == 'line'
-        let opMode = 'V'
+    if s:visualMap
+        let opMode = s:visualMode
+    else
+        if a:type == 'line'
+            let opMode = 'V'
+        else
+            let opMode = 'v'
+        endif
     endif
 
     " There might be a better way to do this but this seems to work well
@@ -32,7 +38,7 @@ function! subversive#singleMotion#substituteMotion(type, ...)
     " Need to use paste mode to avoid auto indent etc
     let previousPaste = &paste
     set paste
-    exe "normal! `" . (s:visualMode ? "<" : "[") . "\"_c" . opMode . "`" . (s:visualMode ? ">" : "]") . "\<C-R>" . s:activeRegister . (endsWithNewLine ? "\<bs>" : "") . "\<ESC>"
+    exe "normal! `" . (s:visualMap ? "<" : "[") . "\"_c" . opMode . "`" . (s:visualMap ? ">" : "]") . "\<C-R>" . s:activeRegister . (endsWithNewLine ? "\<bs>" : "") . "\<ESC>"
     let &paste=previousPaste
 
     " For some reason the change operation places the ] mark after the change instead of at the last
