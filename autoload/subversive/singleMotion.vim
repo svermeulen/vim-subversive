@@ -4,12 +4,12 @@ let s:savedStartPos = []
 let s:savedEndPos = []
 let s:visualMap = 0
 let s:visualMode = 0
+let s:hasYoinkInstalled = 0
 
 try
     call yoink#getDefaultReg()
     let s:hasYoinkInstalled = 1
-catch /\VUnknown function/
-    let s:hasYoinkInstalled = 0
+catch
 endtry
 
 function! subversive#singleMotion#preSubstitute(register, visualMap, visualMode)
