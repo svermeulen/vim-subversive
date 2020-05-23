@@ -3,7 +3,7 @@
 
 Subversive provides two new operator motions to make it very easy to perform quick substitutions.  It contains no default mappings and will have no effect until you add your own maps to it.
 
-Also see [here](https://www.youtube.com/watch?v=crxHxqzXMzw&list=PLDJwwFOUm0KquQvDZGVfPsPLrnlbbXtXB) if you prefer watching a video explanation of this plugin instead of the below text.
+Also see [here](https://www.youtube.com/watch?v=crxHxqzXMzw) if you prefer watching a video explanation of this plugin instead of the below text.
 
 ## Substitute Motion
 
