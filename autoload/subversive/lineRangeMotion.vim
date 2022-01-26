@@ -1,7 +1,6 @@
 
 let g:subversivePromptWithCurrent = get(g:, 'subversivePromptWithCurrent', 0)
 let g:subversiveCurrentTextRegister = get(g:, 'subversiveCurrentTextRegister', '')
-let g:subversivePromptWithActualCommand = get(g:, 'subversivePromptWithActualCommand', 0)
 let g:subversivePreserveCursorPosition = get(g:, 'subversivePreserveCursorPosition', 0)
 
 let s:searchText = ''
@@ -187,9 +186,18 @@ function! subversive#lineRangeMotion#selectRangeMotion(type)
             call setreg(g:subversiveCurrentTextRegister, s:searchText)
         endif
 
+        let promptWithActualCommand = get(g:, 'subversivePromptWithActualCommand', v:null)
+
+        " When unset, show actual command only when &inccommand is set
+        " so that the user gets visual feedback
+        " Otherwise default to a simple prompt
+        if promptWithActualCommand is v:null
+          let promptWithActualCommand = !s:useAbolish && exists("&inccommand") && &inccommand !=# ''
+        endif
+
         " If they have inccommand set in neovim then always prompt with actual command
         " so they can get the instant feedback
-        if g:subversivePromptWithActualCommand || (!s:useAbolish && exists("&inccommand") && &inccommand !=# '')
+        if promptWithActualCommand
             let fullCommand = ":" . commandPrefix . commandSuffix
 
             for i in range(len(commandSuffix))
