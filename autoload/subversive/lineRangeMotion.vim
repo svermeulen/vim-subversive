@@ -70,7 +70,7 @@ endfunction
 function! subversive#lineRangeMotion#getSubstituteCommand(searchText, replaceText, useAbolish, completeWord, confirmReplace)
     call subversive#lineRangeMotion#preSubstitute('', 0, a:useAbolish, a:completeWord, a:confirmReplace)
     let s:searchText = a:searchText
-    return s:getCommandPrefix() . a:replaceText . s:getCommandSuffix()
+    return s:getCommandPrefix() . escape(a:replaceText, '/') . s:getCommandSuffix()
 endfunction
 
 function! subversive#lineRangeMotion#preSubstitute(register, promptForReplaceText, useAbolish, completeWord, confirmReplace)
